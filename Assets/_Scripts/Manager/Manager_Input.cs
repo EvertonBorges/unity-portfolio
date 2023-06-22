@@ -17,6 +17,7 @@ public static class Manager_Input
         gameplayActions = inputActions.Gameplay;
 
         gameplayActions.Interact.performed += ctx => Manager_Events.Player.OnInteract.Notify();
+        gameplayActions.Move.performed += ctx => Manager_Events.Player.OnMove.Notify(ctx.ReadValue<Vector2>());
 
         inputActions.Enable();
     }

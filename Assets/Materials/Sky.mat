@@ -29,7 +29,6 @@ Material:
   - _ENABLEMOON_ON
   - _ENABLEPATTERNOVERLAY_ON
   - _ENABLESTARSROTATION_ON
-  - _ENABLESTARS_ON
   - _ENABLESUN_ON
   m_InvalidKeywords:
   - _MAPPING_LATITUDE_LONGITUDE_LAYOUT
@@ -155,7 +154,7 @@ Material:
     - _EnableFogMessage: 0
     - _EnableMoon: 1
     - _EnablePatternOverlay: 1
-    - _EnableStars: 1
+    - _EnableStars: 0
     - _EnableStarsRotation: 1
     - _EnableStarsTwinkling: 0
     - _EnableSun: 1

@@ -1,18 +1,17 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class CameraController : MonoBehaviour
+public class CameraController : Singleton<CameraController>
 {
-    // Start is called before the first frame update
-    void Start()
+    
+    private Camera m_mainCamera = null;
+    public Camera MainCamera
     {
-        
+        get
+        {
+            m_mainCamera ??= Camera.main;
+
+            return m_mainCamera;
+        }
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
 }
