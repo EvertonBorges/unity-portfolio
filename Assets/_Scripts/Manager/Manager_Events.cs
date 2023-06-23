@@ -24,6 +24,7 @@ public static class Manager_Events
     public static class Player
     {
         public static Event<Vector2> OnMove;
+        public static Event<bool> OnRun;
         public static Event OnInteract;
     }
 

@@ -9,23 +9,48 @@ public class PlayerController : Singleton<PlayerController>
     // main https://models.readyplayer.me/63b62a0d6b5c5b3acae7d89e.glb
     // Ada NPC https://models.readyplayer.me/648cadcd0b3048a825f564de.glb
     // Lara NPC https://models.readyplayer.me/648c93f71e94941b96ce3053.glb
-    [SerializeField] private Animator _animator;
     [SerializeField] private CharacterController _characterController;
-    [SerializeField] private float _speed = 2f;
-    [SerializeField] private string _glbUrl = "https://models.readyplayer.me/63b62a0d6b5c5b3acae7d89e.glb";
 
+    [Header("Movement Parameters")]
+    [SerializeField] private Animator _animator;
+    [SerializeField] private float _speed = 2f;
+    [Range(1f, 10f)][SerializeField] private float _speedRunFactor = 3f;
+    [Range(1f, 100f)][SerializeField] private float _speedChangeRate = 1f;
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
+    [SerializeField] private AudioClip[] _footstepAudioClips;
+
+    [Header("ReadyPlayerMe Parameters")]
+    [SerializeField] private string _glbUrl = "https://models.readyplayer.me/63b62a0d6b5c5b3acae7d89e.glb";
 
     private AvatarObjectLoader m_avatarLoader;
 
     private GameObject m_avatar;
 
+    private int _animIDSpeed = 0;
+    private int _animIDGrounded = 0;
+    private int _animIDJump = 0;
+    private int _animIDFreeFall = 0;
+    private int _animIDMotionSpeed = 0;
+
     private float m_targetRotation = 0f;
     private float m_rotationVelocity;
     private Vector2 m_move = default;
 
+    private float m_speed = 0f;
+    private bool m_running = false;
+
     private Camera MainCamera => CameraController.Instance.MainCamera;
+    private Transform m_transform = null;
+    private Transform MyTransform
+    {
+        get
+        {
+            m_transform ??= transform;
+
+            return m_transform;
+        }
+    }
 
     protected override void Init()
     {
@@ -41,11 +66,22 @@ public class PlayerController : Singleton<PlayerController>
         base.StartInit();
 
         StartAvatar();
+
+        AssignAnimationIDs();
     }
 
     private void Update()
     {
         Move();
+    }
+
+    private void AssignAnimationIDs()
+    {
+        _animIDSpeed = Animator.StringToHash("Speed");
+        _animIDGrounded = Animator.StringToHash("Grounded");
+        _animIDJump = Animator.StringToHash("Jump");
+        _animIDFreeFall = Animator.StringToHash("FreeFall");
+        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
     }
 
     private void StartAvatar()
@@ -61,35 +97,47 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
-        if (m_move == Vector2.zero)
-            return;
+        var maxSpeed = m_running ? _speed * _speedRunFactor : _speed;
 
-        Vector3 direction = new Vector3(m_move.x, 0.0f, m_move.y).normalized;
+        bool isWalking = m_move != Vector2.zero;
 
-        m_targetRotation =
-            Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg + 
-            MainCamera.transform.eulerAngles.y;
+        m_speed = Mathf.Lerp(m_speed, isWalking ? maxSpeed : 0f, Time.deltaTime * _speedChangeRate);
 
-        float rotation =
-            Mathf.SmoothDampAngle(
-                transform.eulerAngles.y,
-                m_targetRotation,
-                ref m_rotationVelocity,
-                _rotationSmoothTime
-            );
+        Vector3 direction = new(m_move.x, 0.0f, m_move.y);
 
-        transform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+        Vector3 normalizedDirection = direction.normalized;
+
+        if (isWalking)
+        {
+            m_targetRotation =
+                Mathf.Atan2(normalizedDirection.x, normalizedDirection.z) * Mathf.Rad2Deg +
+                MainCamera.transform.eulerAngles.y;
+
+            float rotation =
+                Mathf.SmoothDampAngle(
+                    MyTransform.eulerAngles.y,
+                    m_targetRotation,
+                    ref m_rotationVelocity,
+                    _rotationSmoothTime
+                );
+
+            MyTransform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+        }
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, m_targetRotation, 0.0f) * Vector3.forward;
 
-        _characterController.Move(targetDirection.normalized * (_speed * Time.deltaTime));
+        _characterController.Move(targetDirection.normalized * (m_speed * Time.deltaTime));
+
+        _animator.SetFloat(_animIDMotionSpeed, direction.magnitude);
+
+        _animator.SetFloat(_animIDSpeed, m_speed);
     }
 
     private void AvatarLoaderOnCompleted(object obj, CompletionEventArgs args)
     {
         m_avatar = args.Avatar;
 
-        m_avatar.transform.SetParent(transform);
+        m_avatar.transform.SetParent(MyTransform);
         m_avatar.transform.name = "RPM_Model";
 
         _animator.Rebind();
@@ -103,14 +151,23 @@ public class PlayerController : Singleton<PlayerController>
         m_move = value;
     }
 
+    private void OnRun(bool value)
+    {
+        m_running = value;
+    }
+
     void OnEnable()
     {
         Manager_Events.Player.OnMove += OnMove;
+
+        Manager_Events.Player.OnRun += OnRun;
     }
 
     void OnDisable()
     {
         Manager_Events.Player.OnMove -= OnMove;
+
+        Manager_Events.Player.OnRun -= OnRun;
     }
 
     protected override void OnDestroy()
@@ -120,5 +177,17 @@ public class PlayerController : Singleton<PlayerController>
         if (m_avatar != null)
             Destroy(m_avatar);
     }
+
+    private void OnFootstep(AnimationEvent animationEvent)
+        {
+            if (animationEvent.animatorClipInfo.weight > 0.5f)
+            {
+                if (_footstepAudioClips.Length > 0)
+                {
+                    var index = Random.Range(0, _footstepAudioClips.Length);
+                    AudioSource.PlayClipAtPoint(_footstepAudioClips[index], transform.TransformPoint(_characterController.center), 1f);
+                }
+            }
+        }
 
 }
