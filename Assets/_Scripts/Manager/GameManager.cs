@@ -1,8 +1,12 @@
+using UnityEngine;
+
 public class GameManager : Singleton<GameManager>
 {
 
     private const int MIN_COINS = 0;
     private const int MAX_COINS = 9999;
+
+    [SerializeField] private AudioClip _coinClip;
 
     private int m_coins = 0;
 
@@ -23,6 +27,8 @@ public class GameManager : Singleton<GameManager>
             m_coins = MAX_COINS;
 
         Manager_Events.UI.UpdateCoins.Notify(m_coins);
+
+        Manager_Events.Sound.OnPlaySfx.Notify(_coinClip);
     }
 
     private void RemoveCoin() => RemoveCoins();

@@ -21,13 +21,6 @@ public static class Manager_Events
         }
     }
 
-    public static class Player
-    {
-        public static Event<Vector2> OnMove;
-        public static Event<bool> OnRun;
-        public static Event OnInteract;
-    }
-
     public static class GameManager
     {
         public static Event Pause;
@@ -36,6 +29,19 @@ public static class Manager_Events
         public static Event<int> AddCoins;
         public static Event RemoveCoin;
         public static Event<int> RemoveCoins;
+    }
+
+    public static class Player
+    {
+        public static Event<Vector2> OnMove;
+        public static Event<bool> OnRun;
+        public static Event OnInteract;
+    }
+
+    public static class Sound
+    {
+        public static Event<AudioClip> OnPlaySfx;
+        public static Event<SFX_Sound> OnReleaseSfx;
     }
 
     public static class UI
