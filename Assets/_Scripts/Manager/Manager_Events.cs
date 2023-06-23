@@ -32,6 +32,15 @@ public static class Manager_Events
     {
         public static Event Pause;
         public static Event Unpause;
+        public static Event AddCoin;
+        public static Event<int> AddCoins;
+        public static Event RemoveCoin;
+        public static Event<int> RemoveCoins;
+    }
+
+    public static class UI
+    {
+        public static Event<int> UpdateCoins;
     }
 
     public static bool TryGetEvent(InspectorEvent inspectorEvent, out IEvent ev)
