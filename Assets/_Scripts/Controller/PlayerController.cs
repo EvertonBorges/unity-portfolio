@@ -18,7 +18,7 @@ public class PlayerController : Singleton<PlayerController>
     [Range(1f, 100f)][SerializeField] private float _speedChangeRate = 1f;
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
-    [SerializeField] private AudioClip[] _footstepAudioClips;
+    [SerializeField] private SO_Sound _SO_SoundFootstep;
 
     [Header("Gravity Parameters")]
     [SerializeField] private float _fallTimeout = 0.15f;
@@ -236,11 +236,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
-            if (_footstepAudioClips.Length > 0)
-            {
-                var index = Random.Range(0, _footstepAudioClips.Length);
-                AudioSource.PlayClipAtPoint(_footstepAudioClips[index], transform.TransformPoint(_characterController.center), 1f);
-            }
+            Manager_Events.Sound.OnPlaySfx.Notify(_SO_SoundFootstep);
         }
     }
 

@@ -40,7 +40,7 @@ public static class Manager_Events
 
     public static class Sound
     {
-        public static Event<AudioClip> OnPlaySfx;
+        public static Event<SO_Sound> OnPlaySfx;
         public static Event<SFX_Sound> OnReleaseSfx;
     }
 

@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
@@ -5,14 +6,10 @@ using UnityEngine.Pool;
 public class Manager_Sounds : Singleton<Manager_Sounds>
 {
 
-    [Header("Music Parameters")]
-    [SerializeField] private AudioSource _audioSource;
-    [SerializeField] private AudioClip _musicDefault;
-    [SerializeField] private AudioClip _musicArea1;
-    [SerializeField] private AudioClip _musicArea2;
-
-    [Header("SFX Parameters")]
     [SerializeField] private SFX_Sound _prefabSfxSound;
+
+    private List<SFX_Sound> m_ambientSounds;
+    private List<SFX_Sound> m_musicSounds;
 
     private ObjectPool<SFX_Sound> _poolSfxSounds;
 
@@ -21,10 +18,6 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
         base.Init();
 
         DontDestroyOnLoad(gameObject);
-
-        _audioSource ??= GetComponent<AudioSource>();
-
-        _audioSource.clip = _musicDefault;
 
         _poolSfxSounds = new(
             () => Instantiate(_prefabSfxSound, transform),
@@ -37,11 +30,18 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
         );
     }
 
-    private void OnPlaySfx(AudioClip clip)
+    private void OnPlaySfx(SO_Sound so_sound)
     {
         var sfx = _poolSfxSounds.Get();
 
-        sfx.Setup(clip);
+        switch(so_sound.type)
+        {
+            case SO_SoundType.MUSIC: m_musicSounds.Add(sfx); break;
+            case SO_SoundType.AMBIENT: m_ambientSounds.Add(sfx); break;
+            default: break;
+        }
+
+        sfx.Setup(so_sound);
     }
 
     private void OnReleaseSfx(SFX_Sound sfx)

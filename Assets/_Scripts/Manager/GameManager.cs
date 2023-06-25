@@ -6,7 +6,8 @@ public class GameManager : Singleton<GameManager>
     private const int MIN_COINS = 0;
     private const int MAX_COINS = 9999;
 
-    [SerializeField] private AudioClip _coinClip;
+    [Header("Sounds")]
+    [SerializeField] private SO_Sound _SO_Coin;
 
     private int m_coins = 0;
 
@@ -28,7 +29,7 @@ public class GameManager : Singleton<GameManager>
 
         Manager_Events.UI.UpdateCoins.Notify(m_coins);
 
-        Manager_Events.Sound.OnPlaySfx.Notify(_coinClip);
+        Manager_Events.Sound.OnPlaySfx.Notify(_SO_Coin);
     }
 
     private void RemoveCoin() => RemoveCoins();

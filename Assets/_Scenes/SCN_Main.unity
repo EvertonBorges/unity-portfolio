@@ -820,7 +820,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: dd2c5fcdac4c76342a0dd15dc696bddb, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _coinClip: {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
+  _coinVolume: 1
+  _SO_Coin: {fileID: 11400000, guid: a370bcd381f8173498821641412f658a, type: 2}
 --- !u!4 &240332572
 Transform:
   m_ObjectHideFlags: 0

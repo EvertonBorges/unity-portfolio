@@ -7,19 +7,26 @@ public class SFX_Sound : MonoBehaviour
 
     [SerializeField] private AudioSource _audioSource;
 
-    public void Setup(AudioClip clip)
+    public void Setup(SO_Sound sound)
     {
-        transform.name = $"[SFX_Sound] - {clip.name}";
+        var clip = sound.clip[Random.Range(0, sound.clip.Length)];
 
-        _audioSource.loop = false;
+        transform.name = $"[{sound.type}_Sound] - {clip.name}";
 
-        _audioSource.spatialBlend = 0f;
+        _audioSource.loop = sound.loop;
+
+        _audioSource.spatialBlend = sound.spatialBlend ? 1f : 0f;
 
         _audioSource.clip = clip;
 
+        _audioSource.pitch = sound.pitch;
+
+        _audioSource.volume = Mathf.Clamp01(sound.volume);
+
         _audioSource.Play();
 
-        MonoBehaviourHelper.StartCoroutine(WaitSound());
+        if (!sound.loop)
+            MonoBehaviourHelper.StartCoroutine(WaitSound());
     }
 
     private IEnumerator WaitSound()
