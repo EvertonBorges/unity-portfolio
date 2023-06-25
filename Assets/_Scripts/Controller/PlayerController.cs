@@ -20,6 +20,13 @@ public class PlayerController : Singleton<PlayerController>
     [Range(0.0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
     [SerializeField] private AudioClip[] _footstepAudioClips;
 
+    [Header("Gravity Parameters")]
+    [SerializeField] private float _fallTimeout = 0.15f;
+    [SerializeField] private float _gravity = -15f;
+    [SerializeField] private float _maxVerticalVelocity = 53f;
+    [Tooltip("What layers the character uses as ground")]
+    [SerializeField] private LayerMask _groundLayers;
+
     [Header("ReadyPlayerMe Parameters")]
     [SerializeField] private string _glbUrl = "https://models.readyplayer.me/63b62a0d6b5c5b3acae7d89e.glb";
 
@@ -38,7 +45,10 @@ public class PlayerController : Singleton<PlayerController>
     private Vector2 m_move = default;
 
     private float m_speed = 0f;
+    private float m_verticalVelocity = 0f;
+    private float m_fallTimeoutDelta = 0f;
     private bool m_running = false;
+    private bool m_ground = true;
 
     private Camera MainCamera => CameraController.Instance.MainCamera;
     private Transform m_transform = null;
@@ -72,6 +82,10 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Update()
     {
+        ApplyGravity();
+
+        GroundedCheck();
+
         Move();
     }
 
@@ -93,6 +107,42 @@ public class PlayerController : Singleton<PlayerController>
         m_avatarLoader.OnCompleted += AvatarLoaderOnCompleted;
 
         m_avatarLoader.LoadAvatar(_glbUrl);
+    }
+
+    private void ApplyGravity()
+    {
+        if (m_ground)
+        {
+            m_fallTimeoutDelta = _fallTimeout;
+            
+            _animator.SetBool(_animIDFreeFall, false);
+
+            if (m_verticalVelocity < 0.0f)
+                m_verticalVelocity = -2f;
+        }
+        else
+        {
+            if (m_fallTimeoutDelta >= 0.0f)
+                m_fallTimeoutDelta -= Time.deltaTime;
+            else
+                _animator.SetBool(_animIDFreeFall, true);
+        }
+
+        m_verticalVelocity += _gravity * Time.deltaTime;
+
+        if (m_verticalVelocity >= _maxVerticalVelocity)
+            m_verticalVelocity = _maxVerticalVelocity;
+    }
+
+    private void GroundedCheck()
+    {
+        var radius = _characterController.radius;
+
+        Vector3 spherePosition = new(transform.position.x, transform.position.y, transform.position.z);
+
+        m_ground = Physics.CheckSphere(spherePosition, radius, _groundLayers, QueryTriggerInteraction.Ignore);
+
+        _animator.SetBool(_animIDGrounded, m_ground);
     }
 
     private void Move()
@@ -126,7 +176,10 @@ public class PlayerController : Singleton<PlayerController>
 
         Vector3 targetDirection = Quaternion.Euler(0.0f, m_targetRotation, 0.0f) * Vector3.forward;
 
-        _characterController.Move(targetDirection.normalized * (m_speed * Time.deltaTime));
+        _characterController.Move(
+            targetDirection.normalized * (m_speed * Time.deltaTime) +
+            new Vector3(0.0f, m_verticalVelocity, 0.0f) * Time.deltaTime
+        );
 
         _animator.SetFloat(_animIDMotionSpeed, direction.magnitude);
 
@@ -138,6 +191,7 @@ public class PlayerController : Singleton<PlayerController>
         m_avatar = args.Avatar;
 
         m_avatar.transform.SetParent(MyTransform);
+        m_avatar.transform.localPosition = Vector3.zero;
         m_avatar.transform.name = "RPM_Model";
 
         _animator.Rebind();
@@ -179,15 +233,15 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private void OnFootstep(AnimationEvent animationEvent)
+    {
+        if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
-            if (animationEvent.animatorClipInfo.weight > 0.5f)
+            if (_footstepAudioClips.Length > 0)
             {
-                if (_footstepAudioClips.Length > 0)
-                {
-                    var index = Random.Range(0, _footstepAudioClips.Length);
-                    AudioSource.PlayClipAtPoint(_footstepAudioClips[index], transform.TransformPoint(_characterController.center), 1f);
-                }
+                var index = Random.Range(0, _footstepAudioClips.Length);
+                AudioSource.PlayClipAtPoint(_footstepAudioClips[index], transform.TransformPoint(_characterController.center), 1f);
             }
         }
+    }
 
 }
