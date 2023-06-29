@@ -19,6 +19,19 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("How fast the character turns to face movement direction")]
     [Range(0.0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
     [SerializeField] private SO_Sound _SO_SoundFootstep;
+    [SerializeField] private SO_Sound _SO_SoundLand;
+
+    [Header("Interactable Parameters")]
+    [SerializeField] private LayerMask _platformLayers;
+    [SerializeField] private LayerMask _interactablesLayers;
+    private Platform m_platform = null;
+    private Interactable m_interactable = null;
+    private float SphereRadius => _characterController.radius / 2f;
+    private Vector3 m_sphereDirection => -MyTransform.up;
+    private Vector3 m_origin => MyTransform.position;
+    private float m_maxDistance = 0.1f;
+    private bool m_interactingPlatform = false;
+    private bool m_interactingInteractable = false;
 
     [Header("Gravity Parameters")]
     [SerializeField] private float _fallTimeout = 0.15f;
@@ -82,9 +95,12 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Update()
     {
+        if (m_interactingPlatform)
+            return;
+
         ApplyGravity();
 
-        GroundedCheck();
+        CollisionCheck();
 
         Move();
     }
@@ -114,7 +130,7 @@ public class PlayerController : Singleton<PlayerController>
         if (m_ground)
         {
             m_fallTimeoutDelta = _fallTimeout;
-            
+
             _animator.SetBool(_animIDFreeFall, false);
 
             if (m_verticalVelocity < 0.0f)
@@ -134,15 +150,52 @@ public class PlayerController : Singleton<PlayerController>
             m_verticalVelocity = _maxVerticalVelocity;
     }
 
+    private void CollisionCheck()
+    {
+        GroundedCheck();
+
+        PlatformCheck();
+
+        InteractableCheck();
+    }
+
     private void GroundedCheck()
     {
-        var radius = _characterController.radius;
-
-        Vector3 spherePosition = new(transform.position.x, transform.position.y, transform.position.z);
-
-        m_ground = Physics.CheckSphere(spherePosition, radius, _groundLayers, QueryTriggerInteraction.Ignore);
+        m_ground = Physics.CheckSphere(m_origin, SphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
 
         _animator.SetBool(_animIDGrounded, m_ground);
+    }
+
+    private void PlatformCheck()
+    {
+        m_platform = null;
+
+        var origin = m_origin + Vector3.up * (m_maxDistance - 0.05f);
+
+        if (!Physics.Raycast(origin, m_sphereDirection, out RaycastHit hitInfo,
+            m_maxDistance, _platformLayers))
+            return;
+
+        if (!hitInfo.transform.TryGetComponent(out Platform platform))
+            return;
+
+        m_platform = platform;
+    }
+
+    private void InteractableCheck()
+    {
+        m_interactable = null;
+
+        var origin = m_origin + Vector3.up * (m_maxDistance - 0.05f);
+
+        if (!Physics.Raycast(origin, m_sphereDirection, out RaycastHit hitInfo,
+            m_maxDistance, _interactablesLayers))
+            return;
+
+        if (!hitInfo.transform.TryGetComponent(out Interactable interactable))
+            return;
+
+        m_interactable = interactable;
     }
 
     private void Move()
@@ -190,6 +243,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_avatar = args.Avatar;
 
+        m_avatar.SetLayerRecursively("Player");
         m_avatar.transform.SetParent(MyTransform);
         m_avatar.transform.localPosition = Vector3.zero;
         m_avatar.transform.name = "RPM_Model";
@@ -210,11 +264,36 @@ public class PlayerController : Singleton<PlayerController>
         m_running = value;
     }
 
+    private void OnInteract()
+    {
+        if (m_platform != null)
+        {
+            m_interactingPlatform = !m_interactingPlatform;
+
+            if (m_interactingPlatform)
+                m_platform.Interact();
+            else
+                m_platform.InverseInteract();
+        }
+
+        if (!m_interactingPlatform && m_interactable != null)
+        {
+            m_interactingInteractable = !m_interactingInteractable;
+
+            if (m_interactingInteractable)
+                m_interactable.Interact();
+            else
+                m_interactable.InverseInteract();
+        }
+    }
+
     void OnEnable()
     {
         Manager_Events.Player.OnMove += OnMove;
 
         Manager_Events.Player.OnRun += OnRun;
+
+        Manager_Events.Player.OnInteract += OnInteract;
     }
 
     void OnDisable()
@@ -222,6 +301,8 @@ public class PlayerController : Singleton<PlayerController>
         Manager_Events.Player.OnMove -= OnMove;
 
         Manager_Events.Player.OnRun -= OnRun;
+
+        Manager_Events.Player.OnInteract -= OnInteract;
     }
 
     protected override void OnDestroy()
@@ -237,6 +318,14 @@ public class PlayerController : Singleton<PlayerController>
         if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
             Manager_Events.Sound.OnPlaySfx.Notify(_SO_SoundFootstep);
+        }
+    }
+
+    private void OnLand(AnimationEvent animationEvent)
+    {
+        if (animationEvent.animatorClipInfo.weight > 0.5f)
+        {
+            Manager_Events.Sound.OnPlaySfx.Notify(_SO_SoundLand);
         }
     }
 

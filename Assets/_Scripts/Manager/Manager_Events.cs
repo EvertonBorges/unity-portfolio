@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
+using Cinemachine;
 using UnityEngine;
 using static Observer;
 using Event = Observer.Event;
@@ -18,6 +19,19 @@ public static class Manager_Events
             item.Value.SetValue(null, obj);
 
             ((IEvent) obj).SetEventName(item.Key);
+        }
+    }
+
+    public static class Camera
+    {
+        public static Event<CinemachineVirtualCamera, AnimationCurve, float> OnTransitionCamera;
+        public static Event OnTransiteToPreviousCamera;
+
+        public static class Events
+        {
+            public static Event OnGameStart;
+            public static Event OnFpsCam;
+            public static Event OnTpsCam;
         }
     }
 

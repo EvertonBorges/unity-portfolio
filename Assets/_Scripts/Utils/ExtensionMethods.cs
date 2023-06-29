@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public static class ExtensionMethods
 {
@@ -14,7 +15,22 @@ public static class ExtensionMethods
 
     public static bool IsEmpty<T, U>(this Dictionary<T, U> value) => value == null || value.Count <= 0;
 
+    public static bool CompareTag(this Component self, Tags tag) => self.CompareTag(tag.ToString());
+
     public static string ToSingleString(this string[] values) => values.ToList().ToSingleString();
+
+    public static void SetLayerRecursively(this GameObject self, LayerMask layer)
+    {
+        self.layer = layer;
+
+        foreach (Transform child in self.transform)
+            SetLayerRecursively(child.gameObject, layer);
+    }
+
+    public static void SetLayerRecursively(this GameObject self, string layer)
+    {
+        self.SetLayerRecursively(LayerMask.NameToLayer(layer));
+    }
 
     public static string ToSingleString(this List<string> values)
     {
@@ -24,6 +40,14 @@ public static class ExtensionMethods
             result += $"{value}{(value == values[^1] ? "." : ", ")}";
 
         return result;
+    }
+
+    public static float Duration(this AnimationCurve self)
+    {
+        if (self.length > 0)
+            return self[self.length - 1].time;
+
+        return 0f;
     }
 
 }

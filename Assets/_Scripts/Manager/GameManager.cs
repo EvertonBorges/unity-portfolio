@@ -18,6 +18,13 @@ public class GameManager : Singleton<GameManager>
         DontDestroyOnLoad(gameObject);
     }
 
+    protected override void StartInit()
+    {
+        base.StartInit();
+
+        Manager_Events.Camera.Events.OnGameStart.Notify();
+    }
+
     private void AddCoin() => AddCoins();
 
     private void AddCoins(int value = 1)
