@@ -317,7 +317,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
-            Manager_Events.Sound.OnPlaySfx.Notify(_SO_SoundFootstep);
+            Manager_Events.Sound.OnPlay.Notify(_SO_SoundFootstep);
         }
     }
 
@@ -325,7 +325,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         if (animationEvent.animatorClipInfo.weight > 0.5f)
         {
-            Manager_Events.Sound.OnPlaySfx.Notify(_SO_SoundLand);
+            Manager_Events.Sound.OnPlay.Notify(_SO_SoundLand);
         }
     }
 

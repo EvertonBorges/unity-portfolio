@@ -2,7 +2,6 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Pool;
 
-[RequireComponent(typeof(AudioSource))]
 public class Manager_Sounds : Singleton<Manager_Sounds>
 {
 
@@ -36,12 +35,33 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
 
         switch(so_sound.type)
         {
-            case SO_SoundType.MUSIC: m_musicSounds.Add(sfx); break;
+            case SO_SoundType.MUSIC: OnReleaseByType(SO_SoundType.MUSIC); m_musicSounds.Add(sfx); break;
             case SO_SoundType.AMBIENT: m_ambientSounds.Add(sfx); break;
             default: break;
         }
 
         sfx.Setup(so_sound);
+    }
+
+    private void OnReleaseByType(SO_SoundType type)
+    {
+        var list = type == SO_SoundType.MUSIC ? m_musicSounds : (type == SO_SoundType.AMBIENT ? m_ambientSounds : null);
+        var listToRelease = new List<SFX_Sound>();
+
+        foreach (var sfxSound in list)
+        {
+            if (sfxSound.Sound == null || sfxSound.Sound.type != type)
+                continue;
+
+            listToRelease.Add(sfxSound);
+        }
+
+        foreach (var sfxSound in listToRelease)
+        {
+            sfxSound.StopSound();
+
+            OnReleaseSfx(sfxSound);
+        }
     }
 
     private void OnReleaseSfx(SFX_Sound sfx)
@@ -51,16 +71,20 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
 
     void OnEnable()
     {
-        Manager_Events.Sound.OnPlaySfx += OnPlaySfx;
+        Manager_Events.Sound.OnPlay += OnPlaySfx;
 
         Manager_Events.Sound.OnReleaseSfx += OnReleaseSfx;
+
+        Manager_Events.Sound.OnReleaseByType += OnReleaseByType;
     }
 
     void OnDisable()
     {
-        Manager_Events.Sound.OnPlaySfx -= OnPlaySfx;
+        Manager_Events.Sound.OnPlay -= OnPlaySfx;
 
         Manager_Events.Sound.OnReleaseSfx -= OnReleaseSfx;
+
+        Manager_Events.Sound.OnReleaseByType -= OnReleaseByType;
     }
 
 

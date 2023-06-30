@@ -6,6 +6,10 @@ public class GameManager : Singleton<GameManager>
     private const int MIN_COINS = 0;
     private const int MAX_COINS = 9999;
 
+    [Header("Musics and Ambients")]
+    [SerializeField] private SO_Sound _SO_StartMusic;
+    [SerializeField] private SO_Sound[] _SO_StartAmbients;
+
     [Header("Sounds")]
     [SerializeField] private SO_Sound _SO_Coin;
 
@@ -22,6 +26,11 @@ public class GameManager : Singleton<GameManager>
     {
         base.StartInit();
 
+        Manager_Events.Sound.OnPlay.Notify(_SO_StartMusic);
+
+        foreach (var so_ambient in _SO_StartAmbients)
+            Manager_Events.Sound.OnPlay.Notify(so_ambient);
+
         Manager_Events.Camera.Events.OnGameStart.Notify();
     }
 
@@ -36,7 +45,7 @@ public class GameManager : Singleton<GameManager>
 
         Manager_Events.UI.UpdateCoins.Notify(m_coins);
 
-        Manager_Events.Sound.OnPlaySfx.Notify(_SO_Coin);
+        Manager_Events.Sound.OnPlay.Notify(_SO_Coin);
     }
 
     private void RemoveCoin() => RemoveCoins();

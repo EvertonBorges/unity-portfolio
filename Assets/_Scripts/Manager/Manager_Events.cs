@@ -54,8 +54,9 @@ public static class Manager_Events
 
     public static class Sound
     {
-        public static Event<SO_Sound> OnPlaySfx;
+        public static Event<SO_Sound> OnPlay;
         public static Event<SFX_Sound> OnReleaseSfx;
+        public static Event<SO_SoundType> OnReleaseByType;
     }
 
     public static class UI
