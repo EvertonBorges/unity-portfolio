@@ -1,4 +1,6 @@
 using System.Collections;
+using System.Collections.Generic;
+using System.Linq;
 using ReadyPlayerMe.AvatarLoader;
 using ReadyPlayerMe.Core;
 using UnityEngine;
@@ -73,6 +75,15 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private bool IsFpsCam => CameraController.Instance.IsFpsCam;
+
+    private readonly Dictionary<string, Transform> m_renderers = new();
+    private Transform FindRenderer(string name)
+    {
+        if (m_renderers.ContainsKey(name))
+            return m_renderers[name];
+
+        return null;
+    }
 
     private const float _threshold = 0.01f;
 
@@ -301,6 +312,12 @@ public class PlayerController : Singleton<PlayerController>
         _animator.Rebind();
         _animator.Update(0f);
 
+        var renderers = m_transform.GetComponentsInChildren<SkinnedMeshRenderer>();
+        
+        m_renderers.Clear();
+        foreach (var renderer in renderers)
+            m_renderers.Add(renderer.transform.name, renderer.transform);
+
         m_avatarLoader.OnCompleted -= AvatarLoaderOnCompleted;
     }
 
@@ -365,6 +382,9 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_canMoveByInput = false;
 
+        if (!IsFpsCam)
+            EnableRenderer(true);
+
         MonoBehaviourHelper.StartCoroutine(WaitWalk(go, target));
     }
 
@@ -400,7 +420,23 @@ public class PlayerController : Singleton<PlayerController>
 
         m_canMoveByInput = true;
 
+        if (IsFpsCam)
+            EnableRenderer(false);
+
         Manager_Events.Player.OnFinishWalk.Notify(go);
+    }
+
+    private void EnableRenderer(bool enabled)
+    {
+        var layer = LayerMask.NameToLayer(enabled ? "Player" : "FpsIgnore");
+
+        FindRenderer("Renderer_EyeLeft").gameObject.layer = layer;
+        FindRenderer("Renderer_EyeRight").gameObject.layer = layer;
+        FindRenderer("Renderer_Head").gameObject.layer = layer;
+        FindRenderer("Renderer_Teeth").gameObject.layer = layer;
+        FindRenderer("Renderer_Hair").gameObject.layer = layer;
+        FindRenderer("Renderer_Beard").gameObject.layer = layer;
+        FindRenderer("Renderer_Glasses").gameObject.layer = layer;
     }
 
     void OnEnable()
@@ -455,17 +491,13 @@ public class PlayerController : Singleton<PlayerController>
     private void OnFootstep(AnimationEvent animationEvent)
     {
         if (animationEvent.animatorClipInfo.weight > 0.5f)
-        {
             Manager_Events.Sound.OnPlay.Notify(_SO_SoundFootstep);
-        }
     }
 
     private void OnLand(AnimationEvent animationEvent)
     {
         if (animationEvent.animatorClipInfo.weight > 0.5f)
-        {
             Manager_Events.Sound.OnPlay.Notify(_SO_SoundLand);
-        }
     }
 
 }
