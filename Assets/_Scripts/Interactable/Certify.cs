@@ -27,5 +27,5 @@ public class Certify : Interactable
 
         CameraController.Instance.MainCamera.cullingMask = m_maskDefault;
     }
-    
+
 }

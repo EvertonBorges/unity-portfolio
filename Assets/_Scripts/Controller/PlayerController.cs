@@ -1,3 +1,4 @@
+using System.Collections;
 using ReadyPlayerMe.AvatarLoader;
 using ReadyPlayerMe.Core;
 using UnityEngine;
@@ -10,6 +11,7 @@ public class PlayerController : Singleton<PlayerController>
     // Ada NPC https://models.readyplayer.me/648cadcd0b3048a825f564de.glb
     // Lara NPC https://models.readyplayer.me/648c93f71e94941b96ce3053.glb
     [SerializeField] private CharacterController _characterController;
+    [SerializeField] private Transform _cinemachineFpsTarget;
 
     [Header("Movement Parameters")]
     [SerializeField] private Animator _animator;
@@ -17,7 +19,10 @@ public class PlayerController : Singleton<PlayerController>
     [Range(1f, 10f)][SerializeField] private float _speedRunFactor = 3f;
     [Range(1f, 100f)][SerializeField] private float _speedChangeRate = 1f;
     [Tooltip("How fast the character turns to face movement direction")]
-    [Range(0.0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
+    [Range(0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
+    [Range(0f, 5f)][SerializeField] private float _rotationSpeed = 1f;
+    [Range(0f, 180f)][SerializeField] private float _topClamp = 90f;
+    [Range(180f, 0f)][SerializeField] private float _bottomClamp = -90f;
     [SerializeField] private SO_Sound _SO_SoundFootstep;
     [SerializeField] private SO_Sound _SO_SoundLand;
 
@@ -29,7 +34,7 @@ public class PlayerController : Singleton<PlayerController>
     private float SphereRadius => _characterController.radius / 2f;
     private Vector3 m_sphereDirection => -MyTransform.up;
     private Vector3 m_origin => MyTransform.position;
-    private float m_maxDistance = 0.1f;
+    private float m_maxDistance = 5f;
     private bool m_interactingPlatform = false;
     private bool m_interactingInteractable = false;
 
@@ -47,21 +52,13 @@ public class PlayerController : Singleton<PlayerController>
 
     private GameObject m_avatar;
 
-    private int _animIDSpeed = 0;
-    private int _animIDGrounded = 0;
-    private int _animIDJump = 0;
-    private int _animIDFreeFall = 0;
-    private int _animIDMotionSpeed = 0;
+    private int _animIDSpeed = 0, _animIDGrounded = 0, _animIDJump = 0, _animIDFreeFall = 0, _animIDMotionSpeed = 0;
 
-    private float m_targetRotation = 0f;
-    private float m_rotationVelocity;
-    private Vector2 m_move = default;
+    private float m_targetRotation = 0f, m_rotationVelocity, m_cinemachineTargetPitch;
+    private Vector2 m_move = default, m_look = default;
 
-    private float m_speed = 0f;
-    private float m_verticalVelocity = 0f;
-    private float m_fallTimeoutDelta = 0f;
-    private bool m_running = false;
-    private bool m_ground = true;
+    private float m_speed = 0f, m_verticalVelocity = 0f, m_fallTimeoutDelta = 0f;
+    private bool m_running = false, m_ground = true, m_canMoveByInput = true, m_canRotateCamera = false;
 
     private Camera MainCamera => CameraController.Instance.MainCamera;
     private Transform m_transform = null;
@@ -74,6 +71,10 @@ public class PlayerController : Singleton<PlayerController>
             return m_transform;
         }
     }
+
+    private bool IsFpsCam => CameraController.Instance.IsFpsCam;
+
+    private const float _threshold = 0.01f;
 
     protected override void Init()
     {
@@ -93,7 +94,7 @@ public class PlayerController : Singleton<PlayerController>
         AssignAnimationIDs();
     }
 
-    private void Update()
+    void Update()
     {
         if (m_interactingPlatform)
             return;
@@ -103,6 +104,11 @@ public class PlayerController : Singleton<PlayerController>
         CollisionCheck();
 
         Move();
+    }
+
+    void LateUpdate()
+    {
+        CameraRotation();
     }
 
     private void AssignAnimationIDs()
@@ -173,7 +179,7 @@ public class PlayerController : Singleton<PlayerController>
         var origin = m_origin + Vector3.up * (m_maxDistance - 0.05f);
 
         if (!Physics.Raycast(origin, m_sphereDirection, out RaycastHit hitInfo,
-            m_maxDistance, _platformLayers))
+            m_maxDistance, _platformLayers.value))
             return;
 
         if (!hitInfo.transform.TryGetComponent(out Platform platform))
@@ -189,7 +195,7 @@ public class PlayerController : Singleton<PlayerController>
         var origin = m_origin + Vector3.up * (m_maxDistance - 0.05f);
 
         if (!Physics.Raycast(origin, m_sphereDirection, out RaycastHit hitInfo,
-            m_maxDistance, _interactablesLayers))
+            m_maxDistance, _interactablesLayers.value))
             return;
 
         if (!hitInfo.transform.TryGetComponent(out Interactable interactable))
@@ -200,20 +206,47 @@ public class PlayerController : Singleton<PlayerController>
 
     private void Move()
     {
+        if (!m_canMoveByInput)
+            return;
+
         var maxSpeed = m_running ? _speed * _speedRunFactor : _speed;
 
         bool isWalking = m_move != Vector2.zero;
 
         m_speed = Mathf.Lerp(m_speed, isWalking ? maxSpeed : 0f, Time.deltaTime * _speedChangeRate);
 
+        Vector3 targetDirection = IsFpsCam ? GetMoveFpsDirection() : GetMoveTpsDirection();
+
+        _characterController.Move(
+            targetDirection.normalized * (m_speed * Time.deltaTime) +
+            new Vector3(0.0f, m_verticalVelocity, 0.0f) * Time.deltaTime
+        );
+
         Vector3 direction = new(m_move.x, 0.0f, m_move.y);
 
-        Vector3 normalizedDirection = direction.normalized;
+        _animator.SetFloat(_animIDMotionSpeed, direction.magnitude);
 
-        if (isWalking)
+        _animator.SetFloat(_animIDSpeed, m_speed);
+    }
+
+    private Vector3 GetMoveFpsDirection()
+    {
+        Vector3 direction = new Vector3(m_move.x, 0.0f, m_move.y).normalized;
+
+        if (m_move != Vector2.zero)
+            direction = transform.right * m_move.x + transform.forward * m_move.y;
+
+        return direction;
+    }
+
+    private Vector3 GetMoveTpsDirection()
+    {
+        Vector3 direction = new Vector3(m_move.x, 0.0f, m_move.y).normalized;
+
+        if (m_move != Vector2.zero)
         {
             m_targetRotation =
-                Mathf.Atan2(normalizedDirection.x, normalizedDirection.z) * Mathf.Rad2Deg +
+                Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg +
                 MainCamera.transform.eulerAngles.y;
 
             float rotation =
@@ -227,16 +260,33 @@ public class PlayerController : Singleton<PlayerController>
             MyTransform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
         }
 
-        Vector3 targetDirection = Quaternion.Euler(0.0f, m_targetRotation, 0.0f) * Vector3.forward;
+        return Quaternion.Euler(0.0f, m_targetRotation, 0.0f) * Vector3.forward;
+    }
 
-        _characterController.Move(
-            targetDirection.normalized * (m_speed * Time.deltaTime) +
-            new Vector3(0.0f, m_verticalVelocity, 0.0f) * Time.deltaTime
-        );
+    private void CameraRotation()
+    {
+        if (!m_canMoveByInput)
+            return;
 
-        _animator.SetFloat(_animIDMotionSpeed, direction.magnitude);
+        if (!m_canRotateCamera)
+            return;
 
-        _animator.SetFloat(_animIDSpeed, m_speed);
+        if (!IsFpsCam)
+            return;
+
+        if (m_look.sqrMagnitude < _threshold)
+            return;
+
+        float deltaTimeMultiplier = Time.deltaTime;
+
+        m_cinemachineTargetPitch += m_look.y * _rotationSpeed * deltaTimeMultiplier;
+        m_rotationVelocity = m_look.x * _rotationSpeed * deltaTimeMultiplier;
+
+        m_cinemachineTargetPitch = ClampAngle(m_cinemachineTargetPitch, _bottomClamp, _topClamp);
+
+        _cinemachineFpsTarget.transform.localRotation = Quaternion.Euler(m_cinemachineTargetPitch, 0.0f, 0.0f);
+
+        transform.Rotate(Vector3.up * m_rotationVelocity);
     }
 
     private void AvatarLoaderOnCompleted(object obj, CompletionEventArgs args)
@@ -264,6 +314,11 @@ public class PlayerController : Singleton<PlayerController>
         m_running = value;
     }
 
+    private void OnLook(Vector2 value)
+    {
+        m_look = value;
+    }
+
     private void OnInteract()
     {
         if (m_platform != null)
@@ -287,22 +342,106 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private void OnCanRotateFpsCamera(bool value)
+    {
+        m_canRotateCamera = value;
+
+        if (value)
+            _cinemachineFpsTarget.transform.localRotation = Quaternion.Euler(0.0f, 0.0f, 0.0f);
+    }
+
+    private void OnLookAt(Transform target)
+    {
+        m_canMoveByInput = false;
+
+        var position = target.position;
+
+        position.y = m_transform.position.y;
+
+        m_transform.LookAt(position, m_transform.up);
+    }
+
+    private void OnStartWalk(GameObject go, Transform target)
+    {
+        m_canMoveByInput = false;
+
+        MonoBehaviourHelper.StartCoroutine(WaitWalk(go, target));
+    }
+
+    private IEnumerator WaitWalk(GameObject go, Transform target)
+    {
+        OnLookAt(target);
+
+        _animator.SetFloat(_animIDMotionSpeed, 1f);
+
+        _animator.SetFloat(_animIDSpeed, _speed);
+
+        var lastDistance = float.PositiveInfinity;
+
+        var distance = float.PositiveInfinity - 1f;
+
+        while (distance >= 0.1f && distance <= lastDistance)
+        {
+            _characterController.Move(
+                m_transform.forward * (_speed * Time.deltaTime) +
+                new Vector3(0.0f, m_verticalVelocity, 0.0f) * Time.deltaTime
+            );
+
+            lastDistance = distance;
+
+            distance = Vector3.Distance(m_transform.position, target.position);
+
+            yield return null;
+        }
+
+        _animator.SetFloat(_animIDMotionSpeed, 0f);
+
+        _animator.SetFloat(_animIDSpeed, 0f);
+
+        m_canMoveByInput = true;
+
+        Manager_Events.Player.OnFinishWalk.Notify(go);
+    }
+
     void OnEnable()
     {
         Manager_Events.Player.OnMove += OnMove;
 
+        Manager_Events.Player.OnLook += OnLook;
+
         Manager_Events.Player.OnRun += OnRun;
 
         Manager_Events.Player.OnInteract += OnInteract;
+
+        Manager_Events.Player.OnCanRotateFpsCamera += OnCanRotateFpsCamera;
+
+        Manager_Events.Player.OnStartWalk += OnStartWalk;
+
+        Manager_Events.Player.OnLookAt += OnLookAt;
     }
 
     void OnDisable()
     {
         Manager_Events.Player.OnMove -= OnMove;
 
+        Manager_Events.Player.OnLook -= OnLook;
+
         Manager_Events.Player.OnRun -= OnRun;
 
         Manager_Events.Player.OnInteract -= OnInteract;
+
+        Manager_Events.Player.OnCanRotateFpsCamera -= OnCanRotateFpsCamera;
+
+        Manager_Events.Player.OnStartWalk -= OnStartWalk;
+
+        Manager_Events.Player.OnLookAt -= OnLookAt;
+    }
+
+    private static float ClampAngle(float lfAngle, float lfMin, float lfMax)
+    {
+        if (lfAngle < -360f) lfAngle += 360f;
+        if (lfAngle > 360f) lfAngle -= 360f;
+        return Mathf.Clamp(lfAngle, lfMin, lfMax);
     }
 
     protected override void OnDestroy()

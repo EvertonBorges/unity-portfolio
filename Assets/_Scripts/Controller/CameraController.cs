@@ -22,6 +22,9 @@ public class CameraController : Singleton<CameraController>
         }
     }
 
+    private bool m_isFpsCam = false;
+    public bool IsFpsCam => m_isFpsCam;
+
     private CinemachineBrain m_brain;
 
     private CameraConfig m_previousCamera;
@@ -69,11 +72,29 @@ public class CameraController : Singleton<CameraController>
             OnTransitionCamera(m_previousCamera.camera, m_previousCamera.curve, m_previousCamera.duration);
     }
 
+    private void OnFpsCam()
+    {
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+        m_isFpsCam = true;
+    }
+
+    private void OnTpsCam()
+    {
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+        m_isFpsCam = false;
+    }
+
     void OnEnable()
     {
         Manager_Events.Camera.OnTransitionCamera += OnTransitionCamera;
 
         Manager_Events.Camera.OnTransiteToPreviousCamera += OnTransiteToPreviousCamera;
+
+        Manager_Events.Camera.Events.OnFpsCam += OnFpsCam;
+
+        Manager_Events.Camera.Events.OnTpsCam += OnTpsCam;
     }
 
     void OnDisable()
@@ -81,6 +102,10 @@ public class CameraController : Singleton<CameraController>
         Manager_Events.Camera.OnTransitionCamera -= OnTransitionCamera;
 
         Manager_Events.Camera.OnTransiteToPreviousCamera -= OnTransiteToPreviousCamera;
+
+        Manager_Events.Camera.Events.OnFpsCam -= OnFpsCam;
+
+        Manager_Events.Camera.Events.OnTpsCam -= OnTpsCam;
     }
 
 }

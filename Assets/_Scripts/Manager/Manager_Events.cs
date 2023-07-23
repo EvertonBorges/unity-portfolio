@@ -48,8 +48,13 @@ public static class Manager_Events
     public static class Player
     {
         public static Event<Vector2> OnMove;
+        public static Event<Vector2> OnLook;
         public static Event<bool> OnRun;
         public static Event OnInteract;
+        public static Event<Transform> OnLookAt;
+        public static Event<GameObject, Transform> OnStartWalk;
+        public static Event<GameObject> OnFinishWalk;
+        public static Event<bool> OnCanRotateFpsCamera;
     }
 
     public static class Sound

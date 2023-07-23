@@ -13,23 +13,23 @@
       "hash": "76f76584a113b240a4ec11f324b17302bde9a53a"
     },
     "com.readyplayerme.avatarloader": {
-      "version": "https://github.com/readyplayerme/rpm-unity-sdk-avatar-loader.git#v1.3.3",
+      "version": "https://github.com/readyplayerme/rpm-unity-sdk-avatar-loader.git#v1.3.4",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.ugui": "1.0.0",
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
-      "hash": "354535c1519df461f018eb25de6d113a0930932c"
+      "hash": "cf9120d670c96014a687e3cbd69ff6d0a2e69a07"
     },
     "com.readyplayerme.core": {
-      "version": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v1.3.2",
+      "version": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v1.3.3",
       "depth": 0,
       "source": "git",
       "dependencies": {
         "com.unity.nuget.newtonsoft-json": "3.0.2"
       },
-      "hash": "b2ca3e0239bab9ef1642d6cfd1a54a7071ce0337"
+      "hash": "413870952d191e499fe6b5b716e156363764df9e"
     },
     "com.readyplayerme.webview": {
       "version": "https://github.com/readyplayerme/rpm-unity-sdk-webview.git#v1.2.0",
@@ -81,7 +81,7 @@
       "url": "https://packages.unity.com"
     },
     "com.unity.cinemachine": {
-      "version": "2.8.9",
+      "version": "2.9.5",
       "depth": 0,
       "source": "registry",
       "dependencies": {

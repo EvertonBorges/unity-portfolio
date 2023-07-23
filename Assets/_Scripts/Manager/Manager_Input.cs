@@ -19,6 +19,7 @@ public static class Manager_Input
         gameplayActions.Interact.performed += ctx => Manager_Events.Player.OnInteract.Notify();
         gameplayActions.Move.performed += ctx => Manager_Events.Player.OnMove.Notify(ctx.ReadValue<Vector2>());
         gameplayActions.Run.performed += ctx => Manager_Events.Player.OnRun.Notify(ctx.ReadValue<float>() == 1f);
+        gameplayActions.Look.performed += ctx => Manager_Events.Player.OnLook.Notify(ctx.ReadValue<Vector2>());
 
         inputActions.Enable();
     }
