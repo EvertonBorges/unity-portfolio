@@ -185,6 +185,9 @@ MonoBehaviour:
   _interactablesLayers:
     serializedVersion: 2
     m_Bits: 1024
+  _minigameLayers:
+    serializedVersion: 2
+    m_Bits: 4096
   _fallTimeout: 0.15
   _gravity: -15
   _maxVerticalVelocity: 53

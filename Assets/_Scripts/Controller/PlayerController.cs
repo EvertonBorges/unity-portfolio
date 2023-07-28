@@ -1,6 +1,5 @@
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using ReadyPlayerMe.AvatarLoader;
 using ReadyPlayerMe.Core;
 using UnityEngine;
@@ -31,6 +30,7 @@ public class PlayerController : Singleton<PlayerController>
     [Header("Interactable Parameters")]
     [SerializeField] private LayerMask _platformLayers;
     [SerializeField] private LayerMask _interactablesLayers;
+    [SerializeField] private LayerMask _minigameLayers;
     private Platform m_platform = null;
     private Interactable m_interactable = null;
     private float SphereRadius => _characterController.radius / 2f;
@@ -58,6 +58,7 @@ public class PlayerController : Singleton<PlayerController>
 
     private float m_targetRotation = 0f, m_rotationVelocity, m_cinemachineTargetPitch;
     private Vector2 m_move = default, m_look = default;
+    private Vector2 m_cursorPosition = default;
 
     private float m_speed = 0f, m_verticalVelocity = 0f, m_fallTimeoutDelta = 0f;
     private bool m_running = false, m_ground = true, m_canMoveByInput = true, m_canRotateCamera = false;
@@ -336,6 +337,24 @@ public class PlayerController : Singleton<PlayerController>
         m_look = value;
     }
 
+    private void OnCursorPosition(Vector2 value)
+    {
+        m_cursorPosition = value;
+    }
+
+    private void OnClick()
+    {
+        var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
+            return;
+
+        if (!hit.transform.TryGetComponent(out TicTacToe_Piece piece))
+            return;
+
+        piece.Select();
+    }
+
     private void OnInteract()
     {
         if (m_platform != null)
@@ -454,6 +473,10 @@ public class PlayerController : Singleton<PlayerController>
         Manager_Events.Player.OnStartWalk += OnStartWalk;
 
         Manager_Events.Player.OnLookAt += OnLookAt;
+
+        Manager_Events.Player.OnCursorPosition += OnCursorPosition;
+
+        Manager_Events.Player.OnClick += OnClick;
     }
 
     void OnDisable()
@@ -471,6 +494,10 @@ public class PlayerController : Singleton<PlayerController>
         Manager_Events.Player.OnStartWalk -= OnStartWalk;
 
         Manager_Events.Player.OnLookAt -= OnLookAt;
+
+        Manager_Events.Player.OnCursorPosition -= OnCursorPosition;
+
+        Manager_Events.Player.OnClick -= OnClick;
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

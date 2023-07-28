@@ -45,12 +45,23 @@ public static class Manager_Events
         public static Event<int> RemoveCoins;
     }
 
+    public static class Minigames
+    {
+        public static class TicTacToe
+        {
+            public static Event<int, int> OnSelect;
+            public static Event OnCheckVictory;
+        }
+    }
+
     public static class Player
     {
         public static Event<Vector2> OnMove;
         public static Event<Vector2> OnLook;
         public static Event<bool> OnRun;
         public static Event OnInteract;
+        public static Event OnClick;
+        public static Event<Vector2> OnCursorPosition;
         public static Event<Transform> OnLookAt;
         public static Event<GameObject, Transform> OnStartWalk;
         public static Event<GameObject> OnFinishWalk;
