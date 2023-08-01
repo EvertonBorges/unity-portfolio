@@ -1,9 +1,9 @@
 using UnityEngine;
 
-public abstract class Interactable : MonoBehaviour
+public class Interactable : MonoBehaviour, IInteractable
 {
 
-    public abstract void Interact();
-    public abstract void InverseInteract();
+    public virtual void Interact() {}
+    public virtual void InverseInteract() {}
     
 }

@@ -32,7 +32,7 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private LayerMask _interactablesLayers;
     [SerializeField] private LayerMask _minigameLayers;
     private Platform m_platform = null;
-    private Interactable m_interactable = null;
+    private IInteractable m_interactable = null;
     private float SphereRadius => _characterController.radius / 2f;
     private Vector3 m_sphereDirection => -MyTransform.up;
     private Vector3 m_origin => MyTransform.position;
@@ -210,7 +210,7 @@ public class PlayerController : Singleton<PlayerController>
             m_maxDistance, _interactablesLayers.value))
             return;
 
-        if (!hitInfo.transform.TryGetComponent(out Interactable interactable))
+        if (!hitInfo.transform.TryGetComponent(out IInteractable interactable))
             return;
 
         m_interactable = interactable;

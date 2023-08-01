@@ -49,7 +49,7 @@ public static class Manager_Events
     {
         public static class TicTacToe
         {
-            public static Event<int, int> OnSelect;
+            public static Event<TicTacToe_Piece> OnSelect;
             public static Event OnCheckVictory;
         }
     }

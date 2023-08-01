@@ -12,6 +12,8 @@ public class TicTacToe_Piece : MonoBehaviour
     private bool? m_playerSelection = null;
     public bool? PlayerSelection => m_playerSelection;
 
+    private bool m_canInteract = false;
+
     void Awake()
     {
         _spriteRenderer ??= GetComponent<SpriteRenderer>();
@@ -19,6 +21,7 @@ public class TicTacToe_Piece : MonoBehaviour
 
     public void Setup(TicTacToe_PieceValue pieceValue)
     {
+        m_canInteract = true;
         _spriteRenderer.sprite = pieceValue.sprite;
         m_playerSelection = pieceValue.playerSelection;
     }
@@ -32,7 +35,15 @@ public class TicTacToe_Piece : MonoBehaviour
 
     public void Select()
     {
-        Manager_Events.Minigames.TicTacToe.OnSelect.Notify(Row, Column);
+        if (!m_canInteract)
+            return;
+
+        Manager_Events.Minigames.TicTacToe.OnSelect.Notify(this);
+    }
+
+    public void Release()
+    {
+        m_canInteract = false;
     }
 
 }

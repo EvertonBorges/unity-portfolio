@@ -2,12 +2,19 @@ using System;
 using System.Collections.Generic;
 using Cinemachine;
 using UnityEngine;
+using TMPro;
 
 public class Manager_TicTacToe : Interactable
 {
 
     [SerializeField] private LayerMask _maskInteract;
     private LayerMask m_maskDefault;
+
+    [Header("UI")]
+    [SerializeField] private GameObject _ctnGameover;
+    [SerializeField] private TextMeshProUGUI _txtWinner;
+    [SerializeField] private GameObject _ctnTurn;
+    [SerializeField] private TextMeshProUGUI _txtTurn;
 
     [Header("Camera Setting")]
     [SerializeField] private CinemachineVirtualCamera _camera;
@@ -30,6 +37,10 @@ public class Manager_TicTacToe : Interactable
     {
         foreach (var piece in _pieces)
             m_piecesDictionary.Add(new(piece.Row, piece.Column), piece);
+
+        _ctnGameover.SetActive(false);
+
+        _ctnTurn.SetActive(false);
     }
 
     public override void Interact()
@@ -48,12 +59,19 @@ public class Manager_TicTacToe : Interactable
         Manager_Events.Camera.Events.OnTpsCam.Notify();
 
         CameraController.Instance.MainCamera.cullingMask = m_maskDefault;
+
+        ReleasePieces();
     }
 
     private void Setup()
     {
         m_playerOrder = 0;
 
+        ClearBoard();
+    }
+
+    private void ClearBoard()
+    {
         var pieceValue = new TicTacToe_PieceValue() { playerSelection = null, sprite = _pieceEmpty };
 
         foreach (var piece in _pieces)
@@ -61,6 +79,24 @@ public class Manager_TicTacToe : Interactable
 
         foreach (var winnerLine in _winnerLines)
             winnerLine.gameObject.SetActive(false);
+
+        UpdateTurnUI();
+
+        _ctnGameover.SetActive(false);
+
+        _ctnTurn.SetActive(true);
+
+        _txtTurn.gameObject.SetActive(true);
+    }
+
+    private void ReleasePieces()
+    {
+        foreach (var piece in _pieces)
+            piece.Release();
+
+        _ctnGameover.SetActive(false);
+
+        _ctnTurn.SetActive(false);
     }
 
     private void OnCheckVictory()
@@ -117,6 +153,15 @@ public class Manager_TicTacToe : Interactable
 
         if (victory.HasValue)
             ShowVictory(victory.Value);
+        else
+        {
+            if (pieces[new(0, 0)].PlayerSelection.HasValue && pieces[new(0, 1)].PlayerSelection.HasValue && pieces[new(0, 2)].PlayerSelection.HasValue &&
+                pieces[new(1, 0)].PlayerSelection.HasValue && pieces[new(1, 1)].PlayerSelection.HasValue && pieces[new(1, 2)].PlayerSelection.HasValue &&
+                pieces[new(2, 0)].PlayerSelection.HasValue && pieces[new(2, 1)].PlayerSelection.HasValue && pieces[new(2, 2)].PlayerSelection.HasValue)
+            {
+                ShowDraw();
+            }
+        }
     }
 
     private void ShowWinnerLine(Predicate<TicTacToe_WinnerLine> predicate)
@@ -128,12 +173,30 @@ public class Manager_TicTacToe : Interactable
 
     private void ShowVictory(bool playerVictory)
     {
-        Debug.Log($"PlayerVictory: {playerVictory}");
+        _ctnGameover.SetActive(true);
+
+        _txtWinner.SetText($"P{(playerVictory ? "1" : "2")} WIN");
+
+        _txtTurn.gameObject.SetActive(false);
+
+        foreach (var piece in _pieces)
+            if (!piece.PlayerSelection.HasValue)
+                piece.Release();
     }
 
-    private void OnSelect(int row, int column)
+    private void ShowDraw()
     {
-        var piece = m_piecesDictionary[new(row, column)];
+        _ctnGameover.SetActive(true);
+
+        _txtWinner.SetText("DRAW");
+
+        _txtTurn.gameObject.SetActive(false);
+    }
+
+    private void OnSelect(TicTacToe_Piece piece)
+    {
+        if (piece.PlayerSelection.HasValue)
+            return;
 
         var playerSelection = m_playerOrder % 2 == 0;
 
@@ -142,6 +205,18 @@ public class Manager_TicTacToe : Interactable
         piece.Select(pieceValue);
 
         m_playerOrder++;
+
+        UpdateTurnUI();
+    }
+
+    private void UpdateTurnUI()
+    {
+        _txtTurn.SetText($"{(m_playerOrder % 2 == 0 ? "X" : "O")}");
+    }
+
+    public void BTN_Restart()
+    {
+        Setup();
     }
 
     void OnEnable()
@@ -155,5 +230,5 @@ public class Manager_TicTacToe : Interactable
         Manager_Events.Minigames.TicTacToe.OnCheckVictory -= OnCheckVictory;
     }
 
-    
+
 }

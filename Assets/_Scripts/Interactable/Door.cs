@@ -1,7 +1,7 @@
 using System.Collections;
 using UnityEngine;
 
-public class Door : Interactable
+public class Door : MonoBehaviour, IInteractable
 {
 
     [SerializeField] private DoorAnimatorController _doorAnimatorController;
@@ -17,7 +17,7 @@ public class Door : Interactable
         EnableCanvas(false);
     }
 
-    public override void Interact()
+    public void Interact()
     {
         if (m_opened)
             return;
@@ -48,7 +48,7 @@ public class Door : Interactable
         Manager_Events.Player.OnCanRotateFpsCamera.Notify(true);
     }
 
-    public override void InverseInteract()
+    public void InverseInteract()
     {
 
     }
