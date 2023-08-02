@@ -33,12 +33,17 @@ public class TicTacToe_Piece : MonoBehaviour
         Manager_Events.Minigames.TicTacToe.OnCheckVictory.Notify();
     }
 
-    public void Select()
+    public void Select(bool needCheck = true)
     {
-        if (!m_canInteract)
+        if (needCheck && !m_canInteract)
             return;
 
         Manager_Events.Minigames.TicTacToe.OnSelect.Notify(this);
+    }
+
+    public void Get()
+    {
+        m_canInteract = true;
     }
 
     public void Release()
