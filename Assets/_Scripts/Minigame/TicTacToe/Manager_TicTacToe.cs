@@ -8,7 +8,6 @@ using System.Collections;
 public class Manager_TicTacToe : Interactable
 {
 
-    [SerializeField] private LayerMask _maskInteract;
     private LayerMask m_maskDefault;
 
     [Header("UI")]
@@ -18,6 +17,7 @@ public class Manager_TicTacToe : Interactable
     [SerializeField] private TextMeshProUGUI _txtTurn;
 
     [Header("Camera Setting")]
+    [SerializeField] private LayerMask _maskInteract;
     [SerializeField] private CinemachineVirtualCamera _camera;
     [SerializeField] private AnimationCurve _curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private float _duration = 0.5f;

@@ -344,6 +344,13 @@ public class PlayerController : Singleton<PlayerController>
 
     private void OnClick()
     {
+        CheckClickOnTicTacToePiece();
+
+        CheckClickOnDotsLine();
+    }
+
+    private void CheckClickOnTicTacToePiece()
+    {
         var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
 
         if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
@@ -353,6 +360,19 @@ public class PlayerController : Singleton<PlayerController>
             return;
 
         piece.Select();
+    }
+
+    private void CheckClickOnDotsLine()
+    {
+        var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
+            return;
+
+        if (!hit.transform.TryGetComponent(out Dots_Line line))
+            return;
+
+        line.Select();
     }
 
     private void OnInteract()
