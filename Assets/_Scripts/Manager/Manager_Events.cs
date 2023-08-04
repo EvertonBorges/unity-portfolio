@@ -55,7 +55,7 @@ public static class Manager_Events
 
         public static class Dots
         {
-            
+            public static Event<Dots_Line> OnCheckSquare;
         }
     }
 

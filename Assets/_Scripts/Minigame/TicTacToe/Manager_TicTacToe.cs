@@ -1,26 +1,17 @@
 using System;
 using System.Collections.Generic;
-using Cinemachine;
 using UnityEngine;
 using TMPro;
 using System.Collections;
 
-public class Manager_TicTacToe : Interactable
+public class Manager_TicTacToe : Minigame
 {
-
-    private LayerMask m_maskDefault;
 
     [Header("UI")]
     [SerializeField] private GameObject _ctnGameover;
     [SerializeField] private TextMeshProUGUI _txtWinner;
     [SerializeField] private GameObject _ctnTurn;
     [SerializeField] private TextMeshProUGUI _txtTurn;
-
-    [Header("Camera Setting")]
-    [SerializeField] private LayerMask _maskInteract;
-    [SerializeField] private CinemachineVirtualCamera _camera;
-    [SerializeField] private AnimationCurve _curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-    [SerializeField] private float _duration = 0.5f;
 
     [Header("Minigame Parameters")]
     [SerializeField] private Sprite _pieceEmpty;
@@ -44,27 +35,7 @@ public class Manager_TicTacToe : Interactable
         _ctnTurn.SetActive(false);
     }
 
-    public override void Interact()
-    {
-        Setup();
-
-        m_maskDefault = CameraController.Instance.MainCamera.cullingMask;
-
-        CameraController.Instance.MainCamera.cullingMask = _maskInteract;
-
-        Manager_Events.Camera.OnTransitionCamera.Notify(_camera, _curve, _duration);
-    }
-
-    public override void InverseInteract()
-    {
-        Manager_Events.Camera.Events.OnTpsCam.Notify();
-
-        CameraController.Instance.MainCamera.cullingMask = m_maskDefault;
-
-        ReleasePieces();
-    }
-
-    private void Setup()
+    protected override void Setup()
     {
         m_playerOrder = 0;
 
@@ -90,7 +61,7 @@ public class Manager_TicTacToe : Interactable
         _txtTurn.gameObject.SetActive(true);
     }
 
-    private void ReleasePieces()
+    protected override void Release()
     {
         foreach (var piece in _pieces)
             piece.Release();
@@ -358,7 +329,7 @@ public class Manager_TicTacToe : Interactable
             Select(piece21, ref selected);
         else if ((hasValue01 && value01) && (hasValue21 && value21) && !hasValue11)
             Select(piece11, ref selected);
-        else if ((hasValue11 && value11) && (hasValue21 && value21) && !hasValue10)
+        else if ((hasValue11 && value11) && (hasValue21 && value21) && !hasValue01)
             Select(piece01, ref selected);
 
         else if ((hasValue02 && value02) && (hasValue12 && value12) && !hasValue22)

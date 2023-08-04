@@ -1,58 +1,96 @@
 using System;
 using System.Collections.Generic;
-using Cinemachine;
+using System.Linq;
 using UnityEngine;
 
-public class Manager_Dots : Interactable
+public class Manager_Dots : Minigame
 {
 
+    [Header("MiniGame Parameters")]
     [SerializeField] private int _rows;
     [SerializeField] private int _columns;
 
-    [Header("Dot Parameters")]
+    [SerializeField] private Color _playerColor = Color.white;
+    [SerializeField] private Color _npcColor = Color.black;
+
+    [Space(10f)]
     [SerializeField] private GameObject _dotPrefab;
     [SerializeField] private Transform _dotParent;
 
-    [Header("Line Parameters")]
+    [Space(10f)]
     [SerializeField] private Dots_Line _linePrefab;
     [SerializeField] private Transform _lineParent;
 
+    [Space(10f)]
+    [SerializeField] private Dots_Square _squarePrefab;
+    [SerializeField] private Transform _squareParent;
+
     private readonly List<Dots_Line> _lines = new();
-
-    [Header("Camera Setting")]
-    [SerializeField] private LayerMask _maskInteract;
-    [SerializeField] private CinemachineVirtualCamera _camera;
-    [SerializeField] private AnimationCurve _curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
-    [SerializeField] private float _duration = 0.5f;
-
-    private LayerMask m_maskDefault;
+    private readonly List<Dots_Square> _squares = new();
+    
+    private int m_playerOrder = 0;
 
     void Awake()
     {
         CreateDots();
     }
 
-    public override void Interact()
+    protected override void Setup()
     {
-        Setup();
+        m_playerOrder = 0;
 
-        m_maskDefault = CameraController.Instance.MainCamera.cullingMask;
+        _lines.ForEach(x => x.Get());
 
-        CameraController.Instance.MainCamera.cullingMask = _maskInteract;
-
-        Manager_Events.Camera.OnTransitionCamera.Notify(_camera, _curve, _duration);
+        _squares.ForEach(x => x.Get());
     }
 
-    public override void InverseInteract()
+    protected override void Release()
     {
-        Manager_Events.Camera.Events.OnTpsCam.Notify();
+        m_playerOrder = 0;
 
-        CameraController.Instance.MainCamera.cullingMask = m_maskDefault;
+        _lines.ForEach(x => x.Release());
     }
 
-    private void Setup()
+    private void OnCheckSquare(Dots_Line line)
     {
-        _lines.ForEach(x => x.Setup());
+        var playerSelection = m_playerOrder % 2 == 0;
+        var marked = false;
+
+        line.SetColor(playerSelection ? _playerColor : _npcColor);
+
+        foreach (var square in line.SquaresLinked)
+            if (square.NorthLine.Selected && square.EastLine.Selected && square.SouthLine.Selected && square.WestLine.Selected)
+            {
+                square.Mark(playerSelection);
+                square.SetColor(playerSelection ? _playerColor : _npcColor);
+                marked = true;
+            }
+
+        if (!marked)
+            m_playerOrder++;
+
+        CheckVictory();
+    }
+
+    private void CheckVictory()
+    {
+        var allPoints = _squares.Select(x => x.PlayerPoint).ToList();
+        var allMarked = allPoints.Count(x => x.HasValue);
+
+        var totalSquares = (_rows - 1) * (_columns - 1);
+
+        if (allMarked < totalSquares)
+            return;
+
+        var playerMarked = allPoints.Count(x => x.HasValue && x.Value);
+        var npcMarked = allPoints.Count(x => x.HasValue && !x.Value);
+
+        if (playerMarked > npcMarked)
+            Debug.Log("Player Win");
+        else if (playerMarked < npcMarked)
+            Debug.Log("Npc Win");
+        else
+            Debug.Log("Draw");
     }
 
     public void CreateDots()
@@ -75,9 +113,13 @@ public class Manager_Dots : Interactable
 
                 dot.transform.localPosition = new(j * columnSpace - 0.5f, 0.5f - i * rowSpace, 0f);
 
+                dot.name = $"Dot_{i}x{j}";
+
                 dots.Add(new(i, j), dot);
             }
         }
+
+        _lines.Clear();
 
         for (int i = 0; i < _rows; i++)
         {
@@ -91,7 +133,11 @@ public class Manager_Dots : Interactable
 
                     var line = Instantiate(_linePrefab, _lineParent);
 
+                    line.Setup(dot, nextDot);
+
                     line.transform.localPosition = (dot.transform.localPosition + nextDot.transform.localPosition) / 2f;
+
+                    line.name = $"Line_{dot.name}_{nextDot.name}";
 
                     var distance = (nextDot.transform.localPosition - dot.transform.localPosition).magnitude;
 
@@ -108,7 +154,11 @@ public class Manager_Dots : Interactable
 
                     var line = Instantiate(_linePrefab, _lineParent);
 
+                    line.Setup(dot, nextDot);
+
                     line.transform.localPosition = (dot.transform.localPosition + nextDot.transform.localPosition) / 2f;
+
+                    line.name = $"Line_{dot.name}_{nextDot.name}";
 
                     var distance = (nextDot.transform.localPosition - dot.transform.localPosition).magnitude;
 
@@ -116,6 +166,37 @@ public class Manager_Dots : Interactable
 
                     _lines.Add(line);
                 }
+            }
+        }
+
+        _squares.Clear();
+
+        for (int i = 0; i < _rows - 1; i++)
+        {
+            for (int j = 0; j < _columns - 1; j++)
+            {
+                var dot1 = dots[new(i, j)];
+                var dot2 = dots[new(i + 1, j)];
+                var dot3 = dots[new(i, j + 1)];
+                var dot4 = dots[new(i + 1, j + 1)];
+
+                var northLine = _lines.Find(x => (x.PointA == dot1 || x.PointA == dot3) && (x.PointB == dot1 || x.PointB == dot3));
+                var eastLine = _lines.Find(x => (x.PointA == dot3 || x.PointA == dot4) && (x.PointB == dot3 || x.PointB == dot4));
+                var southLine = _lines.Find(x => (x.PointA == dot2 || x.PointA == dot4) && (x.PointB == dot2 || x.PointB == dot4));
+                var westLine = _lines.Find(x => (x.PointA == dot1 || x.PointA == dot2) && (x.PointB == dot1 || x.PointB == dot2));
+
+                var square = Instantiate(_squarePrefab, _squareParent);
+                square.Setup(northLine, eastLine, southLine, westLine);
+                square.transform.localPosition = (dot1.transform.localPosition + dot4.transform.localPosition) / 2f;
+                square.transform.localScale = Vector3.one * northLine.transform.localScale.x;
+                square.name = $"Square_{i}x{j}";
+
+                northLine.LinkSquare(square);
+                eastLine.LinkSquare(square);
+                southLine.LinkSquare(square);
+                westLine.LinkSquare(square);
+
+                _squares.Add(square);
             }
         }
     }
@@ -131,6 +212,21 @@ public class Manager_Dots : Interactable
 
         for (int i = 0; i < lineChildCount; i++)
             DestroyImmediate(_lineParent.GetChild(0).gameObject);
+
+        var squareChildCount = _squareParent.childCount;
+
+        for (int i = 0; i < squareChildCount; i++)
+            DestroyImmediate(_squareParent.GetChild(0).gameObject);
+    }
+
+    void OnEnable()
+    {
+        Manager_Events.Minigames.Dots.OnCheckSquare += OnCheckSquare;
+    }
+
+    void OnDisable()
+    {
+        Manager_Events.Minigames.Dots.OnCheckSquare -= OnCheckSquare;
     }
 
 }
