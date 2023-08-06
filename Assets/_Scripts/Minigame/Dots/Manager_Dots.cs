@@ -2,10 +2,20 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using TMPro;
 using UnityEngine;
 
 public class Manager_Dots : Minigame
 {
+
+    [Header("UI")]
+    [SerializeField] private GameObject _ctnGameover;
+    [SerializeField] private TextMeshProUGUI _txtWinner;
+    [SerializeField] private GameObject _ctnTurn;
+    [SerializeField] private TextMeshProUGUI _txtTurn;
+    [SerializeField] private GameObject _ctnScore;
+    [SerializeField] private TextMeshProUGUI _txtPlayerScore;
+    [SerializeField] private TextMeshProUGUI _txtNpcScore;
 
     [Header("MiniGame Parameters")]
     [SerializeField] private int _rows;
@@ -34,19 +44,39 @@ public class Manager_Dots : Minigame
     void Awake()
     {
         CreateDots();
+
+        Release();
     }
 
     protected override void Setup()
     {
         m_playerOrder = 0;
 
+        _ctnGameover.SetActive(false);
+
+        _ctnTurn.SetActive(true);
+
+        _ctnScore.SetActive(true);
+
         _lines.ForEach(x => x.Restart());
 
         _squares.ForEach(x => x.Restart());
+
+        UpdateTurnUI();
+
+        UpdateScoreUI();
     }
 
     protected override void Release()
     {
+        _ctnGameover.SetActive(false);
+
+        _ctnTurn.SetActive(false);
+
+        _ctnScore.SetActive(false);
+
+        UpdateTurnUI();
+
         _lines.ForEach(x => x.Release());
     }
 
@@ -79,6 +109,10 @@ public class Manager_Dots : Minigame
 
         if (m_playerOrder % 2 != 0)
             NpcTurn();
+
+        UpdateTurnUI();
+
+        UpdateScoreUI();
     }
 
     private void NpcTurn()
@@ -120,12 +154,41 @@ public class Manager_Dots : Minigame
         var playerMarked = allPoints.Count(x => x.HasValue && x.Value);
         var npcMarked = allPoints.Count(x => x.HasValue && !x.Value);
 
+        _ctnGameover.SetActive(true);
+
+        _txtTurn.gameObject.SetActive(false);
+
         if (playerMarked > npcMarked)
-            Debug.Log("Player Win");
+            _txtWinner.SetText($"Player WIN");
         else if (playerMarked < npcMarked)
-            Debug.Log("Npc Win");
+            _txtWinner.SetText($"CPU WIN");
         else
-            Debug.Log("Draw");
+            _txtWinner.SetText("DRAW");
+    }
+
+    private void UpdateTurnUI()
+    {
+        var player = m_playerOrder % 2 == 0;
+
+        _txtTurn.SetText($"{(player ? "Player" : "CPU")}");
+
+        _txtTurn.color = player ? _playerColor : _npcColor;
+    }
+
+    private void UpdateScoreUI()
+    {
+        var allPoints = _squares.Select(x => x.PlayerPoint).ToList();
+
+        var playerScore = allPoints.Count(x => x.HasValue && x.Value);
+        var npcScore = allPoints.Count(x => x.HasValue && !x.Value);
+
+        _txtPlayerScore.text = $"{playerScore}";
+        _txtNpcScore.text = $"{npcScore}";
+    }
+
+    public void BTN_Restart()
+    {
+        Setup();
     }
 
     public void CreateDots()
