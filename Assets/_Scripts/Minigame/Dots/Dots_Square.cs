@@ -43,7 +43,7 @@ public class Dots_Square : MonoBehaviour
         UpdateSprite();
     }
 
-    public void Get()
+    public void Restart()
     {
         m_playerPoint = null;
 
@@ -69,6 +69,38 @@ public class Dots_Square : MonoBehaviour
     private void UpdateSprite()
     {
         _spriteRenderer.sprite = !m_playerPoint.HasValue ? null : (m_playerPoint.Value ? _spritePlayer : _spriteNpc);
+    }
+
+    public bool OneLeft(out Dots_Line line)
+    {
+        line = null;
+
+        if (m_playerPoint.HasValue)
+            return false;
+
+        var count = m_northLine.Selected ? 1 : 0;
+
+        count += m_eastLine.Selected ? 1 : 0;
+        count += m_southLine.Selected ? 1 : 0;
+        count += m_westLine.Selected ? 1 : 0;
+
+        var result = count == 3;
+
+        if (result)
+        {
+            line = 
+                !m_northLine.Selected ? 
+                    m_northLine : 
+                    (!m_eastLine.Selected ? 
+                        m_eastLine : 
+                        (!m_southLine.Selected ? 
+                            m_southLine : 
+                            m_westLine
+                        )
+                    );
+        }
+
+        return result;
     }
 
 }

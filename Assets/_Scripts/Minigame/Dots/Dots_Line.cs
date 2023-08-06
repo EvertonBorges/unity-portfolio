@@ -36,6 +36,17 @@ public class Dots_Line : MonoBehaviour
         m_squaresLinked.Clear();
     }
 
+    public void Restart()
+    {
+        m_canSelect = true;
+        
+        m_selected = false;
+
+        SetColor(Color.white);
+
+        UpdateSpriteRenderer();
+    }
+
     public void LinkSquare(Dots_Square square)
     {
         m_squaresLinked.Add(square);
@@ -44,12 +55,6 @@ public class Dots_Line : MonoBehaviour
     public void Get()
     {
         m_canSelect = true;
-
-        m_selected = false;
-
-        SetColor(Color.white);
-
-        UpdateSpriteRenderer();
     }
 
     public void Release()
@@ -57,9 +62,9 @@ public class Dots_Line : MonoBehaviour
         m_canSelect = false;
     }
 
-    public void Select()
+    public void Select(bool needCheck = true)
     {
-        if (!m_canSelect || m_selected)
+        if (needCheck && (!m_canSelect || m_selected))
             return;
 
         m_selected = true;

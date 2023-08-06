@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -39,15 +40,13 @@ public class Manager_Dots : Minigame
     {
         m_playerOrder = 0;
 
-        _lines.ForEach(x => x.Get());
+        _lines.ForEach(x => x.Restart());
 
-        _squares.ForEach(x => x.Get());
+        _squares.ForEach(x => x.Restart());
     }
 
     protected override void Release()
     {
-        m_playerOrder = 0;
-
         _lines.ForEach(x => x.Release());
     }
 
@@ -59,17 +58,53 @@ public class Manager_Dots : Minigame
         line.SetColor(playerSelection ? _playerColor : _npcColor);
 
         foreach (var square in line.SquaresLinked)
+        {
             if (square.NorthLine.Selected && square.EastLine.Selected && square.SouthLine.Selected && square.WestLine.Selected)
             {
                 square.Mark(playerSelection);
                 square.SetColor(playerSelection ? _playerColor : _npcColor);
                 marked = true;
             }
+        }
 
+        NextTurn(marked);
+
+        CheckVictory();
+    }
+
+    private void NextTurn(bool marked)
+    {
         if (!marked)
             m_playerOrder++;
 
-        CheckVictory();
+        if (m_playerOrder % 2 != 0)
+            NpcTurn();
+    }
+
+    private void NpcTurn()
+    {
+        MonoBehaviourHelper.StartCoroutine(WaitNpcTurn());
+    }
+
+    private IEnumerator WaitNpcTurn()
+    {
+        _lines.ForEach(x => x.Release());
+
+        Dots_Line line = null;
+
+        var square = _squares.Find(x => x.OneLeft(out line));
+
+        if (!square)
+        {
+            var lines = _lines.FindAll(x => !x.Selected);
+            line = lines[UnityEngine.Random.Range(0, lines.Count)];
+        }
+
+        yield return new WaitForSeconds(1f);
+        
+        line.Select(false);
+
+        _lines.ForEach(x => x.Get());
     }
 
     private void CheckVictory()
