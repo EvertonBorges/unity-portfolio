@@ -109,6 +109,18 @@ public static class Manager_Events
         ev.Add(callback, inspectorEvent.Order);
     }
 
+    public static void Remove(InspectorEvent inspectorEvent, Action callback)
+    {
+        IEvent ev;
+
+        if (!Extensions.TryGetField(inspectorEvent, out FieldInfo field))
+            return;
+        
+        ev = (IEvent) field.GetValue(inspectorEvent);
+
+        ev.Remove(callback, inspectorEvent.Order);
+    }
+
     public static class Extensions
     {
         private static readonly Type MainType = typeof(Manager_Events);
