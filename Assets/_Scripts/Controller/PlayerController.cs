@@ -377,6 +377,13 @@ public class PlayerController : Singleton<PlayerController>
 
     private void OnInteract()
     {
+        if (Manager_Dialog.Instance.Show)
+        {
+            Manager_Events.Dialog.NextDialog.Notify();
+
+            return;
+        }
+
         if (m_platform != null)
         {
             m_interactingPlatform = !m_interactingPlatform;
