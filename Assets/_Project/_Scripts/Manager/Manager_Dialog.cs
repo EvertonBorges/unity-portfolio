@@ -1,6 +1,9 @@
 using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
+using System.Text;
+using System.Collections;
+using System.Threading.Tasks;
 
 public class Manager_Dialog : Singleton<Manager_Dialog>
 {
@@ -10,10 +13,15 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
     [SerializeField] private UI_FadeEffect _fadeEffect;
 
-    private bool m_show = false;
-    public bool Show => m_show;
+    [SerializeField] private float _timePerCharacter;
+    [SerializeField] private float _speedReading = 2f;
 
-    private readonly List<string> m_dialogs = new();
+    public bool Show { get; private set; } = false;
+    public bool Writing { get; private set; } = false;
+
+    private readonly StringBuilder m_stringBuilder = new();
+    private bool m_speedRead = false;
+    private readonly List<SO_Dialog> m_dialogs = new();
 
     protected override void StartInit()
     {
@@ -24,22 +32,31 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
         _fadeEffect.HideForced();
     }
 
-    private void ShowDialog(string[] dialogs)
+    private void ShowDialog(SO_Dialogs dialogs)
     {
+        _txtDialog.SetText("");
+
         m_dialogs.Clear();
 
-        m_dialogs.AddRange(dialogs);
+        m_dialogs.AddRange(dialogs.dialogs);
 
         if (m_dialogs.IsEmpty())
             return;
 
-        NextDialog();
+        Show = true;
 
-        _fadeEffect.FadeIn();
+        _fadeEffect.FadeIn(NextDialog);
     }
 
-    private void NextDialog()
+    private async void NextDialog()
     {
+        if (Writing)
+        {
+            m_speedRead = true;
+
+            return;
+        }
+
         if (m_dialogs.IsEmpty())
         {
             HideDialog();
@@ -49,18 +66,43 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
         var dialog = m_dialogs[0];
 
+        dialog._preEvent.Notify();
+
         m_dialogs.RemoveAt(0);
 
-        _txtDialog.SetText(dialog);
+        m_speedRead = false;
+        Writing = false;
 
-        m_show = true;
+        await ShowDialog(dialog);
+
+        dialog._postEvent.Notify();
+    }
+
+    private async Task ShowDialog(SO_Dialog dialog)
+    {
+        Writing = true;
+
+        m_stringBuilder.Clear();
+
+        foreach (var character in dialog._dialog)
+        {
+            m_stringBuilder.Append(character);
+
+            _txtDialog.SetText(m_stringBuilder.ToString());
+
+            float delay = _timePerCharacter * 1000 / (m_speedRead ? _speedReading : 1f);
+
+            await Task.Delay(Mathf.FloorToInt(delay));
+        }
+
+        Writing = false;
     }
 
     private void HideDialog()
     {
         _fadeEffect.FadeOut();
 
-        m_show = false;
+        Show = false;
     }
 
     void OnEnable()

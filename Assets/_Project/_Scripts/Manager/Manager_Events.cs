@@ -37,7 +37,7 @@ public static class Manager_Events
 
     public static class Dialog
     {
-        public static Event<string[]> ShowDialog;
+        public static Event<SO_Dialogs> ShowDialog;
         public static Event NextDialog;
     }
 

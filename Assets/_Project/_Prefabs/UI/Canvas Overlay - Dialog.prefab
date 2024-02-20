@@ -163,6 +163,8 @@ MonoBehaviour:
   _txtCharacter: {fileID: 764601606213157226}
   _txtDialog: {fileID: 764601607116073781}
   _fadeEffect: {fileID: 764601607456809174}
+  _timePerCharacter: 0.0625
+  _speedReading: 20
 --- !u!1 &764601606213157228
 GameObject:
   m_ObjectHideFlags: 0

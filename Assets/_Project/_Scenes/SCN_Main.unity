@@ -1723,10 +1723,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03a03ddacb879c4ab72b521e001441a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dialogs:
-  - Teste 1
-  - Teste 2
-  - Teste 3
+  _dialog: {fileID: 11400000, guid: e6afdd10d86f964499d8353ef51b491b, type: 2}
 --- !u!65 &489773717
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -8341,6 +8338,14 @@ PrefabInstance:
     - target: {fileID: 764601605727026612, guid: eb589c80aaacb8148ac08aac105814a8, type: 3}
       propertyPath: m_Name
       value: Canvas Overlay - Dialog
+      objectReference: {fileID: 0}
+    - target: {fileID: 764601605799797238, guid: eb589c80aaacb8148ac08aac105814a8, type: 3}
+      propertyPath: _speedReading
+      value: 10
+      objectReference: {fileID: 0}
+    - target: {fileID: 764601607116073781, guid: eb589c80aaacb8148ac08aac105814a8, type: 3}
+      propertyPath: m_HorizontalAlignment
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: eb589c80aaacb8148ac08aac105814a8, type: 3}

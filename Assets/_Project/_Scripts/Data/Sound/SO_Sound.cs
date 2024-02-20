@@ -1,6 +1,6 @@
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "SO_Sound", menuName = "Data/Sounds", order = 0)]
+[CreateAssetMenu(fileName = "SO_Sound", menuName = "Data/Sounds", order = 1)]
 public class SO_Sound : ScriptableObject
 {
     
