@@ -13,6 +13,8 @@ public class PlayerController : Singleton<PlayerController>
     // Lara NPC https://models.readyplayer.me/648c93f71e94941b96ce3053.glb
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _cinemachineFpsTarget;
+    [SerializeField] private bool _useModel = false;
+    [SerializeField] private GameObject _model;
 
     [Header("Movement Parameters")]
     [SerializeField] private Animator _animator;
@@ -133,6 +135,21 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private void StartAvatar()
+    {
+        if (_useModel)
+            StartAvatarByModel();
+        else
+            StartAvatarReadyPlayerMe();
+    }
+
+    private void StartAvatarByModel()
+    {
+        m_avatar = Instantiate(_model, m_transform);
+
+        AvatarLoaded();
+    }
+
+    private void StartAvatarReadyPlayerMe()
     {
         ApplicationData.Log();
 
@@ -305,21 +322,32 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_avatar = args.Avatar;
 
+        AvatarLoaded();
+
+        m_avatarLoader.OnCompleted -= AvatarLoaderOnCompleted;
+    }
+
+    private void AvatarLoaded()
+    {
         m_avatar.SetLayerRecursively("Player");
         m_avatar.transform.SetParent(MyTransform);
-        m_avatar.transform.localPosition = Vector3.zero;
+        m_avatar.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         m_avatar.transform.name = "RPM_Model";
 
         _animator.Rebind();
         _animator.Update(0f);
 
-        var renderers = m_transform.GetComponentsInChildren<SkinnedMeshRenderer>();
+        PopulateRenderers(m_transform);
+    }
+
+    private void PopulateRenderers(Transform parent)
+    {
+        var renderers = parent.GetComponentsInChildren<SkinnedMeshRenderer>();
         
         m_renderers.Clear();
+
         foreach (var renderer in renderers)
             m_renderers.Add(renderer.transform.name, renderer.transform);
-
-        m_avatarLoader.OnCompleted -= AvatarLoaderOnCompleted;
     }
 
     private void OnMove(Vector2 value)
