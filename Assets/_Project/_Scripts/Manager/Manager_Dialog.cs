@@ -17,9 +17,9 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
     [SerializeField] private float _speedReading = 2f;
 
     public bool Show { get; private set; } = false;
-    public bool Writing { get; private set; } = false;
 
     private readonly StringBuilder m_stringBuilder = new();
+    private bool m_writing = false;
     private bool m_speedRead = false;
     private readonly List<SO_Dialog> m_dialogs = new();
 
@@ -45,12 +45,14 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
         Show = true;
 
-        _fadeEffect.FadeIn(NextDialog);
+        _fadeEffect.FadeIn(FadeIn);
     }
+
+    private void FadeIn() => NextDialog();
 
     private async void NextDialog()
     {
-        if (Writing)
+        if (m_writing)
         {
             m_speedRead = true;
 
@@ -71,7 +73,7 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
         m_dialogs.RemoveAt(0);
 
         m_speedRead = false;
-        Writing = false;
+        m_writing = false;
 
         await ShowDialog(dialog);
 
@@ -80,7 +82,7 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
     private async Task ShowDialog(SO_Dialog dialog)
     {
-        Writing = true;
+        m_writing = true;
 
         m_stringBuilder.Clear();
 
@@ -95,13 +97,16 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
             await Task.Delay(Mathf.FloorToInt(delay));
         }
 
-        Writing = false;
+        m_writing = false;
     }
 
     private void HideDialog()
     {
-        _fadeEffect.FadeOut();
+        _fadeEffect.FadeOut(FadeOut);
+    }
 
+    private void FadeOut()
+    {
         Show = false;
     }
 

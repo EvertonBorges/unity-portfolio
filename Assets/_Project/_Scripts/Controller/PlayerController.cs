@@ -240,11 +240,11 @@ public class PlayerController : Singleton<PlayerController>
 
         var maxSpeed = m_running ? _speed * _speedRunFactor : _speed;
 
-        bool isWalking = m_move != Vector2.zero;
-
-        m_speed = Mathf.Lerp(m_speed, isWalking ? maxSpeed : 0f, Time.deltaTime * _speedChangeRate);
+        bool isWalking = m_move != Vector2.zero && !Manager_Dialog.Instance.Show;
 
         Vector3 targetDirection = IsFpsCam ? GetMoveFpsDirection() : GetMoveTpsDirection();
+
+        m_speed = Mathf.Lerp(m_speed, isWalking ? maxSpeed : 0f, Time.deltaTime * _speedChangeRate);
 
         _characterController.Move(
             targetDirection.normalized * (m_speed * Time.deltaTime) +
@@ -263,7 +263,7 @@ public class PlayerController : Singleton<PlayerController>
         Vector3 direction = new Vector3(m_move.x, 0.0f, m_move.y).normalized;
 
         if (m_move != Vector2.zero)
-            direction = transform.right * m_move.x + transform.forward * m_move.y;
+            direction = MyTransform.right * m_move.x + MyTransform.forward * m_move.y;
 
         return direction;
     }
@@ -278,15 +278,18 @@ public class PlayerController : Singleton<PlayerController>
                 Mathf.Atan2(direction.x, direction.z) * Mathf.Rad2Deg +
                 MainCamera.transform.eulerAngles.y;
 
-            float rotation =
-                Mathf.SmoothDampAngle(
-                    MyTransform.eulerAngles.y,
-                    m_targetRotation,
-                    ref m_rotationVelocity,
-                    _rotationSmoothTime
-                );
+            if (!Manager_Dialog.Instance.Show)
+            {
+                float rotation =
+                    Mathf.SmoothDampAngle(
+                        MyTransform.eulerAngles.y,
+                        m_targetRotation,
+                        ref m_rotationVelocity,
+                        _rotationSmoothTime
+                    );
 
-            MyTransform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+                MyTransform.rotation = Quaternion.Euler(0.0f, rotation, 0.0f);
+            }
         }
 
         return Quaternion.Euler(0.0f, m_targetRotation, 0.0f) * Vector3.forward;
