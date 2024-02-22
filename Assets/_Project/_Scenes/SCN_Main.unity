@@ -1723,7 +1723,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: e03a03ddacb879c4ab72b521e001441a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  _dialog: {fileID: 11400000, guid: e6afdd10d86f964499d8353ef51b491b, type: 2}
+  _onlyFirstTime: 0
+  _triggerType: 0
+  _soDialog: {fileID: 11400000, guid: e6afdd10d86f964499d8353ef51b491b, type: 2}
+  _objectToActive: {fileID: 0}
 --- !u!65 &489773717
 BoxCollider:
   m_ObjectHideFlags: 0

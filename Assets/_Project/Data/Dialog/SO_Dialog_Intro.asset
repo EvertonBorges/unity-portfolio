@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 6d92486e2481cb64b9b9c5e1b05df67c, type: 3}
   m_Name: SO_Dialog_Intro
   m_EditorClassIdentifier: 
+  title: Dialog - Game Intro
   dialogs:
   - _preEvent:
       _event: 

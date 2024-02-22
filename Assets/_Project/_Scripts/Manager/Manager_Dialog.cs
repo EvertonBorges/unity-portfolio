@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Text;
 using System.Collections;
 using System.Threading.Tasks;
+using System;
 
 public class Manager_Dialog : Singleton<Manager_Dialog>
 {
@@ -21,6 +22,9 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
     private readonly StringBuilder m_stringBuilder = new();
     private bool m_writing = false;
     private bool m_speedRead = false;
+    
+    private Action m_postCallback;
+
     private readonly List<SO_Dialog> m_dialogs = new();
 
     protected override void StartInit()
@@ -32,7 +36,7 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
         _fadeEffect.HideForced();
     }
 
-    private void ShowDialog(SO_Dialogs dialogs)
+    private void ShowDialog(SO_Dialogs dialogs, Action preCallback, Action postCallback)
     {
         _txtDialog.SetText("");
 
@@ -40,10 +44,15 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
         m_dialogs.AddRange(dialogs.dialogs);
 
+        m_postCallback = postCallback;
+
         if (m_dialogs.IsEmpty())
             return;
 
         Show = true;
+
+        preCallback?.Invoke();
+        preCallback = null;
 
         _fadeEffect.FadeIn(FadeIn);
     }
@@ -108,6 +117,10 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
     private void FadeOut()
     {
         Show = false;
+
+        m_postCallback?.Invoke();
+
+        m_postCallback = null;
     }
 
     void OnEnable()
