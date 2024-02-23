@@ -4,12 +4,28 @@ public class DialogTrigger : MonoBehaviour
 {
 
     [SerializeField] private bool _onlyOneTime = false;
-    [SerializeField] private bool _onlyFirstInSession = false;
 
     [SerializeField] private TriggerType _triggerType = TriggerType.TRIGGER_ENTER;
     [SerializeField] private SO_Dialogs _soDialog;
 
     [SerializeField] private GameObject _objectToActive;
+
+    void Awake()
+    {
+#if !UNITY_EDITOR
+        Destroy(GetComponent<MeshRenderer>());
+        Destroy(GetComponent<MeshFilter>());
+#endif
+
+        if (_objectToActive != null)
+            _objectToActive.SetActive(false);
+
+        if (_onlyOneTime && PlayerPrefsUtils.GetBool(_soDialog.title))
+        {
+            PostCallback();
+            Destroy(gameObject);
+        }
+    }
 
     void OnTriggerEnter(Collider other)
     {
@@ -39,6 +55,9 @@ public class DialogTrigger : MonoBehaviour
     {
         if (!other.TryGetComponent(out PlayerController _))
             return;
+
+        if (_onlyOneTime)
+            PlayerPrefsUtils.SetBool(_soDialog.title, true);
 
         Manager_Events.Dialog.ShowDialog.Notify(_soDialog, null, PostCallback);
 

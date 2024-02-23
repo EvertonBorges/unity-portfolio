@@ -22,7 +22,6 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
     private readonly StringBuilder m_stringBuilder = new();
     private bool m_writing = false;
     private bool m_speedRead = false;
-    
     private Action m_postCallback;
 
     private readonly List<SO_Dialog> m_dialogs = new();
