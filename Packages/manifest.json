@@ -3,6 +3,7 @@
     "com.atteneder.draco": "4.1.0",
     "com.atteneder.gltfast": "5.0.0",
     "com.atteneder.ktx": "2.2.3",
+    "com.cysharp.unitask": "https://github.com/Cysharp/UniTask.git?path=src/UniTask/Assets/Plugins/UniTask",
     "com.readyplayerme.avatarloader": "https://github.com/readyplayerme/rpm-unity-sdk-avatar-loader.git#v1.3.4",
     "com.readyplayerme.core": "https://github.com/readyplayerme/rpm-unity-sdk-core.git#v1.3.3",
     "com.readyplayerme.webview": "https://github.com/readyplayerme/rpm-unity-sdk-webview.git#v1.2.0",

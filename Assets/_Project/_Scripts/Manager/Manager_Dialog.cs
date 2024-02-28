@@ -2,9 +2,8 @@ using UnityEngine;
 using TMPro;
 using System.Collections.Generic;
 using System.Text;
-using System.Collections;
-using System.Threading.Tasks;
 using System;
+using Cysharp.Threading.Tasks;
 
 public class Manager_Dialog : Singleton<Manager_Dialog>
 {
@@ -88,7 +87,7 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
         dialog._postEvent.Notify();
     }
 
-    private async Task ShowDialog(SO_Dialog dialog)
+    private async UniTask ShowDialog(SO_Dialog dialog)
     {
         m_writing = true;
 
@@ -100,9 +99,9 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
             _txtDialog.SetText(m_stringBuilder.ToString());
 
-            float delay = _timePerCharacter * 1000 / (m_speedRead ? _speedReading : 1f);
-
-            await Task.Delay(Mathf.FloorToInt(delay));
+            int delay = Mathf.FloorToInt(_timePerCharacter * 1000 / (m_speedRead ? _speedReading : 1f));
+            
+            await UniTask.Delay(delay);
         }
 
         m_writing = false;
