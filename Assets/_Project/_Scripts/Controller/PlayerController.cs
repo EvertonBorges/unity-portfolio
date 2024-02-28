@@ -30,17 +30,15 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private SO_Sound _SO_SoundLand;
 
     [Header("Interactable Parameters")]
-    [SerializeField] private LayerMask _platformLayers;
     [SerializeField] private LayerMask _interactablesLayers;
     [SerializeField] private LayerMask _minigameLayers;
-    private Platform m_platform = null;
+    [SerializeField] private GameObject _interactableWarn;
     private IInteractable m_interactable = null;
+    private bool m_interacting = false;
     private float SphereRadius => _characterController.radius / 2f;
-    private Vector3 m_sphereDirection => -MyTransform.up;
-    private Vector3 m_origin => MyTransform.position;
-    private float m_maxDistance = 5f;
-    private bool m_interactingPlatform = false;
-    private bool m_interactingInteractable = false;
+    private Vector3 SphereDirection => -MyTransform.up;
+    private Vector3 Origin => MyTransform.position;
+    private readonly float m_maxDistance = 5f;
 
     [Header("Gravity Parameters")]
     [SerializeField] private float _fallTimeout = 0.15f;
@@ -97,6 +95,8 @@ public class PlayerController : Singleton<PlayerController>
         _animator ??= GetComponent<Animator>();
 
         _characterController ??= GetComponent<CharacterController>();
+
+        _interactableWarn.SetActive(false);
     }
 
     protected override void StartInit()
@@ -110,7 +110,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void Update()
     {
-        if (m_interactingPlatform)
+        if (m_interacting)
             return;
 
         ApplyGravity();
@@ -189,41 +189,34 @@ public class PlayerController : Singleton<PlayerController>
     {
         GroundedCheck();
 
-        PlatformCheck();
+        var hadInteractable = m_interactable != null;
 
         InteractableCheck();
+
+        if (!hadInteractable && m_interactable != null && !_interactableWarn.activeSelf)
+        {
+            _interactableWarn.SetActive(true);
+        }
+        else if (hadInteractable && m_interactable == null && _interactableWarn.activeSelf)
+        {
+            _interactableWarn.SetActive(false);
+        }
     }
 
     private void GroundedCheck()
     {
-        m_ground = Physics.CheckSphere(m_origin, SphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
+        m_ground = Physics.CheckSphere(Origin, SphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
 
         _animator.SetBool(_animIDGrounded, m_ground);
-    }
-
-    private void PlatformCheck()
-    {
-        m_platform = null;
-
-        var origin = m_origin + Vector3.up * (m_maxDistance - 0.05f);
-
-        if (!Physics.Raycast(origin, m_sphereDirection, out RaycastHit hitInfo,
-            m_maxDistance, _platformLayers.value))
-            return;
-
-        if (!hitInfo.transform.TryGetComponent(out Platform platform))
-            return;
-
-        m_platform = platform;
     }
 
     private void InteractableCheck()
     {
         m_interactable = null;
 
-        var origin = m_origin + Vector3.up * (m_maxDistance - 0.05f);
+        var origin = Origin + Vector3.up * (m_maxDistance - 0.05f);
 
-        if (!Physics.Raycast(origin, m_sphereDirection, out RaycastHit hitInfo,
+        if (!Physics.Raycast(origin, SphereDirection, out RaycastHit hitInfo,
             m_maxDistance, _interactablesLayers.value))
             return;
 
@@ -415,24 +408,16 @@ public class PlayerController : Singleton<PlayerController>
             return;
         }
 
-        if (m_platform != null)
+        if (m_interactable != null)
         {
-            m_interactingPlatform = !m_interactingPlatform;
+            m_interacting = !m_interacting;
 
-            if (m_interactingPlatform)
-                m_platform.Interact();
-            else
-                m_platform.InverseInteract();
-        }
-
-        if (!m_interactingPlatform && m_interactable != null)
-        {
-            m_interactingInteractable = !m_interactingInteractable;
-
-            if (m_interactingInteractable)
+            if (m_interacting)
                 m_interactable.Interact();
             else
                 m_interactable.InverseInteract();
+
+            _interactableWarn.SetActive(!m_interacting);
         }
     }
 
@@ -496,6 +481,8 @@ public class PlayerController : Singleton<PlayerController>
         _animator.SetFloat(_animIDSpeed, 0f);
 
         m_canMoveByInput = true;
+
+        m_interacting = false;
 
         if (IsFpsCam)
             EnableRenderer(false);

@@ -169,6 +169,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _characterController: {fileID: 7581853045139671080}
   _cinemachineFpsTarget: {fileID: 733772174}
+  _useModel: 0
+  _model: {fileID: 0}
   _animator: {fileID: 7094285967375454878}
   _speed: 2
   _speedRunFactor: 3
@@ -179,15 +181,13 @@ MonoBehaviour:
   _bottomClamp: -90
   _SO_SoundFootstep: {fileID: 11400000, guid: 0e45fcd3406724c47b5beb8e53872b10, type: 2}
   _SO_SoundLand: {fileID: 11400000, guid: 658a8973b84b64040a5d575c40850861, type: 2}
-  _platformLayers:
-    serializedVersion: 2
-    m_Bits: 512
   _interactablesLayers:
     serializedVersion: 2
-    m_Bits: 1024
+    m_Bits: 512
   _minigameLayers:
     serializedVersion: 2
     m_Bits: 4096
+  _interactableWarn: {fileID: 0}
   _fallTimeout: 0.15
   _gravity: -15
   _maxVerticalVelocity: 53

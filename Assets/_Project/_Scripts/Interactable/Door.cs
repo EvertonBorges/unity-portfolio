@@ -76,6 +76,9 @@ public class Door : MonoBehaviour, IInteractable
         if (!other.TryGetComponent(out PlayerController _))
             return;
 
+        if (!CameraController.Instance.IsFpsCam)
+            return;
+
         EnableCanvas(true);
     }
 
