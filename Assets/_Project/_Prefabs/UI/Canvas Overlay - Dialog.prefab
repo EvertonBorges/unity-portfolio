@@ -12,6 +12,7 @@ GameObject:
   - component: {fileID: 764601605727026609}
   - component: {fileID: 764601605727026610}
   - component: {fileID: 764601605727026611}
+  - component: {fileID: 5531957786086307642}
   m_Layer: 5
   m_Name: Canvas Overlay - Dialog
   m_TagString: Untagged
@@ -57,6 +58,7 @@ Canvas:
   m_OverrideSorting: 0
   m_OverridePixelPerfect: 0
   m_SortingBucketNormalizedSize: 0
+  m_VertexColorAlwaysGammaSpace: 0
   m_AdditionalShaderChannelsFlag: 25
   m_SortingLayerID: 0
   m_SortingOrder: 0
@@ -101,6 +103,23 @@ MonoBehaviour:
   m_BlockingMask:
     serializedVersion: 2
     m_Bits: 4294967295
+--- !u!114 &5531957786086307642
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 764601605727026612}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 215b1d11ce94db6419cfe759f7015781, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _txtCharacter: {fileID: 764601606213157226}
+  _txtDialog: {fileID: 764601607116073781}
+  _fadeEffect: {fileID: 764601607456809174}
+  _timePerCharacter: 0.0625
+  _speedReading: 20
 --- !u!1 &764601605799797225
 GameObject:
   m_ObjectHideFlags: 0
@@ -111,7 +130,6 @@ GameObject:
   m_Component:
   - component: {fileID: 764601605799797224}
   - component: {fileID: 764601605799797239}
-  - component: {fileID: 764601605799797238}
   m_Layer: 5
   m_Name: Manager_Dialog
   m_TagString: Untagged
@@ -148,23 +166,6 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 764601605799797225}
   m_CullTransparentMesh: 1
---- !u!114 &764601605799797238
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 764601605799797225}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 215b1d11ce94db6419cfe759f7015781, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _txtCharacter: {fileID: 764601606213157226}
-  _txtDialog: {fileID: 764601607116073781}
-  _fadeEffect: {fileID: 764601607456809174}
-  _timePerCharacter: 0.0625
-  _speedReading: 20
 --- !u!1 &764601606213157228
 GameObject:
   m_ObjectHideFlags: 0
