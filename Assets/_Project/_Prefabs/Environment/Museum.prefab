@@ -8689,7 +8689,7 @@ PrefabInstance:
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 8467bf78459b14f41846241fd1bfc3a1, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_TargetTexture
       value: 
@@ -8698,13 +8698,17 @@ PrefabInstance:
       propertyPath: m_TargetAudioSources.Array.data[0]
       value: 
       objectReference: {fileID: 6153196492392405713}
+    - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: _videoName
+      value: project_unodos.mp4
+      objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2034480990777672320, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5418008563180910034, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_RootOrder
@@ -8754,9 +8758,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Totem_East_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5418008563180910045, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418008563960147578, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5418008564396577747, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6867561385968851150, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_Texture
@@ -8784,7 +8796,7 @@ PrefabInstance:
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 62673eb0286a0de48afa756f16cd4963, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_TargetTexture
       value: 
@@ -8793,13 +8805,17 @@ PrefabInstance:
       propertyPath: m_TargetAudioSources.Array.data[0]
       value: 
       objectReference: {fileID: 2185417412915364632}
+    - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: _videoName
+      value: project_cattrash.mp4
+      objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2034480990777672320, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5418008563180910034, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_RootOrder
@@ -8849,9 +8865,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Totem_West_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5418008563180910045, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418008563960147578, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5418008564396577747, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6867561385968851150, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_Texture
@@ -8879,7 +8903,7 @@ PrefabInstance:
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: 4c808a3bd54d7fb4ea58c8abdd9f7304, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_TargetTexture
       value: 
@@ -8888,13 +8912,17 @@ PrefabInstance:
       propertyPath: m_TargetAudioSources.Array.data[0]
       value: 
       objectReference: {fileID: 2185417413255717102}
+    - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: _videoName
+      value: project_cloop.mp4
+      objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2034480990777672320, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5418008563180910034, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_RootOrder
@@ -8944,9 +8972,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Totem_East_2
       objectReference: {fileID: 0}
+    - target: {fileID: 5418008563180910045, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418008563960147578, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5418008564396577747, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6867561385968851150, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_Texture
@@ -8974,7 +9010,7 @@ PrefabInstance:
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: fd6b069ddbb13a64c83cde90753ad402, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_TargetTexture
       value: 
@@ -8983,13 +9019,17 @@ PrefabInstance:
       propertyPath: m_TargetAudioSources.Array.data[0]
       value: 
       objectReference: {fileID: 2185417411939086665}
+    - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: _videoName
+      value: project_bubbleme.mp4
+      objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2034480990777672320, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5418008563180910034, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_RootOrder
@@ -9039,9 +9079,17 @@ PrefabInstance:
       propertyPath: m_Name
       value: Totem_West_1
       objectReference: {fileID: 0}
+    - target: {fileID: 5418008563180910045, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418008563960147578, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5418008564396577747, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6867561385968851150, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_Texture
@@ -9131,7 +9179,7 @@ PrefabInstance:
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_VideoClip
       value: 
-      objectReference: {fileID: 32900000, guid: bb482f2cdc0943f41a0f435e8b36eac7, type: 3}
+      objectReference: {fileID: 0}
     - target: {fileID: 239907263767365392, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_TargetTexture
       value: 
@@ -9140,13 +9188,17 @@ PrefabInstance:
       propertyPath: m_TargetAudioSources.Array.data[0]
       value: 
       objectReference: {fileID: 2185417411295992749}
+    - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: _videoName
+      value: project_donotdisturb.mp4
+      objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 2034480990777672320, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 3697945402576414542, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
@@ -9188,9 +9240,17 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 5418008563180910045, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5418008563960147578, guid: dc4df637727c811429e16258f6bf355b, type: 3}
+      propertyPath: m_StaticEditorFlags
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5418008564396577747, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
-      value: 2147483647
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6867561385968851150, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_Texture

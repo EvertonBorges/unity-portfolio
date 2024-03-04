@@ -1,3 +1,4 @@
+using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
 
@@ -7,6 +8,7 @@ public class TotemController : MonoBehaviour
 
     [Header("Video Parameters")]
     [SerializeField] private VideoPlayer _videoPlayer;
+    [SerializeField] private string _videoName;
 
     [Header("Events")]
     [SerializeField] private InspectorEvent _activeEvent;
@@ -15,6 +17,9 @@ public class TotemController : MonoBehaviour
     void Awake()
     {
         _videoPlayer ??= GetComponent<VideoPlayer>();
+
+        var path = Path.Combine(Application.dataPath, "Resources", "Videos", _videoName);
+        _videoPlayer.url = path;
 
         Manager_Events.Add(_activeEvent, ActiveEvent);
         Manager_Events.Add(_desactiveEvent, DesactiveEvent);
