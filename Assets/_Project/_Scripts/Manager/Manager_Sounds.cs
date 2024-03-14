@@ -7,8 +7,9 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
 
     [SerializeField] private SFX_Sound _prefabSfxSound;
 
-    private List<SFX_Sound> m_ambientSounds;
-    private List<SFX_Sound> m_musicSounds;
+    private readonly List<SFX_Sound> m_ambientSounds = new();
+    private readonly List<SFX_Sound> m_musicSounds = new();
+    private readonly List<SFX_Sound> m_sfxSounds = new();
 
     private ObjectPool<SFX_Sound> _poolSfxSounds;
 
@@ -37,6 +38,7 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
         {
             case SO_SoundType.MUSIC: OnReleaseByType(SO_SoundType.MUSIC); m_musicSounds.Add(sfx); break;
             case SO_SoundType.AMBIENT: m_ambientSounds.Add(sfx); break;
+            case SO_SoundType.SFX: m_sfxSounds.Add(sfx); break;
             default: break;
         }
 
@@ -45,7 +47,13 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
 
     private void OnReleaseByType(SO_SoundType type)
     {
-        var list = type == SO_SoundType.MUSIC ? m_musicSounds : (type == SO_SoundType.AMBIENT ? m_ambientSounds : null);
+        List<SFX_Sound> list = type switch
+        {
+            SO_SoundType.AMBIENT => m_ambientSounds,
+            SO_SoundType.SFX => m_sfxSounds,
+            _ => m_musicSounds,
+        };
+
         var listToRelease = new List<SFX_Sound>();
 
         foreach (var sfxSound in list)

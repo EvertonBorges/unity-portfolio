@@ -1,13 +1,22 @@
 using System.IO;
 using UnityEngine;
 using UnityEngine.Video;
+using TMPro;
 
 [RequireComponent(typeof(VideoPlayer))]
 public class TotemController : MonoBehaviour
 {
 
-    [Header("Video Parameters")]
+    [Header("References")]
     [SerializeField] private VideoPlayer _videoPlayer;
+    [SerializeField] private TextMeshProUGUI _txtTitle;
+    [SerializeField] private TextMeshProUGUI _txtDescription;
+
+    [Header("Totem Infos")]
+    [SerializeField] private string _title;
+    [SerializeField] private string _description;
+
+    [Header("Video Parameters")]
     [SerializeField] private string _videoName;
 
     [Header("Events")]
@@ -16,25 +25,52 @@ public class TotemController : MonoBehaviour
 
     void Awake()
     {
-        _videoPlayer ??= GetComponent<VideoPlayer>();
+        if (_videoPlayer == null) _videoPlayer = GetComponent<VideoPlayer>();
 
-        var path = Path.Combine(Application.dataPath, "Resources", "Videos", _videoName);
-        _videoPlayer.url = path;
-
-        Manager_Events.Add(_activeEvent, ActiveEvent);
-        Manager_Events.Add(_desactiveEvent, DesactiveEvent);
-
+        LoadVideo();
+        LoadTotemInfos();
+        
+        HandleEvents();
         DesactiveEvent();
     }
 
-    private void ActiveEvent()
+    private void LoadVideo()
+    {
+        var path = Path.Combine(Application.dataPath, "Resources", "Videos", _videoName);
+        _videoPlayer.url = path;
+    }
+
+    private void LoadTotemInfos()
+    {
+        _txtTitle.SetText(_title);
+        _txtDescription.SetText(_description);
+    }
+
+    private void HandleEvents()
+    {
+        Manager_Events.Add(_activeEvent, ActiveEvent);
+        Manager_Events.Add(_desactiveEvent, DesactiveEvent);
+    }
+
+    public void PlayVideo()
     {
         _videoPlayer.Play();
     }
 
-    private void DesactiveEvent()
+    public void StopVideo()
     {
         _videoPlayer.Stop();
+        _videoPlayer.targetTexture.Release();
+    }
+
+    private void ActiveEvent()
+    {
+        _videoPlayer.Prepare();
+    }
+
+    private void DesactiveEvent()
+    {
+        StopVideo();
     }
 
     void OnDestroy()

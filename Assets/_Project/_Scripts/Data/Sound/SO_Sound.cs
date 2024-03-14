@@ -11,4 +11,9 @@ public class SO_Sound : ScriptableObject
     public bool loop = false;
     public bool spatialBlend = false;
 
+    public void Play()
+    {
+        Manager_Events.Sound.OnPlay.Notify(this);
+    }
+
 }
