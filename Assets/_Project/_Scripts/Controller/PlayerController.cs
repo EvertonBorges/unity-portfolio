@@ -115,6 +115,9 @@ public class PlayerController : Singleton<PlayerController>
         if (!CanMove)
             return;
 
+        if (Pause)
+            return;
+
         ApplyGravity();
 
         CollisionCheck();
@@ -124,6 +127,9 @@ public class PlayerController : Singleton<PlayerController>
 
     void LateUpdate()
     {
+        if (Pause)
+            return;
+            
         CameraRotation();
     }
 

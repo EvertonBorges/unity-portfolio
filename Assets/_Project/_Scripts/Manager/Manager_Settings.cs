@@ -4,6 +4,9 @@ using UnityEngine.Audio;
 public class Manager_Settings : Singleton<Manager_Settings>
 {
 
+    [SerializeField] private SO_Translations _translations;
+    public SO_Translations Translations => _translations;
+
     [SerializeField] private AudioMixer _audioMixer;
 
     [SerializeField] private UI_Settings_Slider _musicSlider;
@@ -78,6 +81,8 @@ public class Manager_Settings : Singleton<Manager_Settings>
 
     private void UpdateLanguage(int value)
     {
+        Manager_Events.UI.OnChangeLanguage.Notify();
+
         LanguageIndex = value;
     }
 

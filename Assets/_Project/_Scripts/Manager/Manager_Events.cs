@@ -103,6 +103,7 @@ public static class Manager_Events
     {
         public static Event<int> UpdateCoins;
         public static Event<bool> OnPause;
+        public static Event OnChangeLanguage;
     }
 
     public static bool TryGetEvent(InspectorEvent inspectorEvent, out IEvent ev)

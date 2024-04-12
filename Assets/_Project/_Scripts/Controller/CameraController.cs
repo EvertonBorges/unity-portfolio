@@ -86,26 +86,46 @@ public class CameraController : Singleton<CameraController>
         m_isFpsCam = false;
     }
 
+    private void OnPause()
+    {
+        if (!m_isFpsCam)
+            return;
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    private void OnUnpause()
+    {
+        if (!m_isFpsCam)
+            return;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+    }
+
     void OnEnable()
     {
         Manager_Events.Camera.OnTransitionCamera += OnTransitionCamera;
-
         Manager_Events.Camera.OnTransiteToPreviousCamera += OnTransiteToPreviousCamera;
 
         Manager_Events.Camera.Events.OnFpsCam += OnFpsCam;
-
         Manager_Events.Camera.Events.OnTpsCam += OnTpsCam;
+
+        Manager_Events.GameManager.Pause += OnPause;
+        Manager_Events.GameManager.Unpause += OnUnpause;
     }
 
     void OnDisable()
     {
         Manager_Events.Camera.OnTransitionCamera -= OnTransitionCamera;
-
         Manager_Events.Camera.OnTransiteToPreviousCamera -= OnTransiteToPreviousCamera;
 
         Manager_Events.Camera.Events.OnFpsCam -= OnFpsCam;
-
         Manager_Events.Camera.Events.OnTpsCam -= OnTpsCam;
+
+        Manager_Events.GameManager.Pause -= OnPause;
+        Manager_Events.GameManager.Unpause -= OnUnpause;
     }
 
 }

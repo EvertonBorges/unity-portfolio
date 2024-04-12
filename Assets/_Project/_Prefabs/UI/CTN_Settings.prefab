@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1613088637163039782}
   - component: {fileID: 1613088637163039784}
+  - component: {fileID: 8238064658602689703}
   - component: {fileID: 1613088637163039785}
   m_Layer: 5
   m_Name: TXT_Title
@@ -46,6 +47,22 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1613088637163039783}
   m_CullTransparentMesh: 1
+--- !u!114 &8238064658602689703
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1613088637163039783}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eaaadd7b6e822994f8f36d2dc991c487, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _key: settings
+  _preText: 
+  _text: {fileID: 1613088637163039785}
+  _postText: 
 --- !u!114 &1613088637163039785
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -228,6 +245,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 05e4c166090bd164193df77d83170c97, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  _translations: {fileID: 11400000, guid: 00005be017747cb4f8c9dd26a3f6750f, type: 2}
   _audioMixer: {fileID: 24100000, guid: 18a070b359d9a9544a0915f42456ffb9, type: 2}
   _musicSlider: {fileID: 1613088638565403196}
   _sfxSlider: {fileID: 1235252711829490826}
@@ -342,6 +360,14 @@ PrefabInstance:
     - target: {fileID: 524291512559839734, guid: b0644e2850e3236429b5862ed415de24, type: 3}
       propertyPath: _event._event
       value: Settings/OnChangeMusicVolume
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945056135570986592, guid: b0644e2850e3236429b5862ed415de24, type: 3}
+      propertyPath: _key
+      value: music
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945056135570986592, guid: b0644e2850e3236429b5862ed415de24, type: 3}
+      propertyPath: _postText
+      value: ':'
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0644e2850e3236429b5862ed415de24, type: 3}
@@ -472,6 +498,14 @@ PrefabInstance:
       propertyPath: _event._event
       value: Settings/OnChangeSfxVolume
       objectReference: {fileID: 0}
+    - target: {fileID: 1945056135570986592, guid: b0644e2850e3236429b5862ed415de24, type: 3}
+      propertyPath: _key
+      value: sfx
+      objectReference: {fileID: 0}
+    - target: {fileID: 1945056135570986592, guid: b0644e2850e3236429b5862ed415de24, type: 3}
+      propertyPath: _postText
+      value: ':'
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: b0644e2850e3236429b5862ed415de24, type: 3}
 --- !u!114 &1235252711829490826 stripped
@@ -497,6 +531,14 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 1613088637676875756}
     m_Modifications:
+    - target: {fileID: 6836492876164931069, guid: 4b5651ce1a4ff7d47b7d010c640213f2, type: 3}
+      propertyPath: _key
+      value: language
+      objectReference: {fileID: 0}
+    - target: {fileID: 6836492876164931069, guid: 4b5651ce1a4ff7d47b7d010c640213f2, type: 3}
+      propertyPath: _postText
+      value: ':'
+      objectReference: {fileID: 0}
     - target: {fileID: 8030409544438384279, guid: 4b5651ce1a4ff7d47b7d010c640213f2, type: 3}
       propertyPath: m_text
       value: 'LANGUAGE:'
