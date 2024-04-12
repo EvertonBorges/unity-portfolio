@@ -15,6 +15,11 @@ public abstract class Minigame : Interactable
     protected abstract void Setup();
     protected abstract void Release();
 
+    protected virtual void Awake()
+    {
+        _camera.Priority = 10;
+    }
+
     public override void Interact()
     {
         Setup();

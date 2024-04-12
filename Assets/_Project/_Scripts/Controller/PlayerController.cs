@@ -371,6 +371,8 @@ public class PlayerController : Singleton<PlayerController>
         CheckClickOnTicTacToePiece();
 
         CheckClickOnDotsLine();
+
+        CheckClickOnMemoryPiece();
     }
 
     private void CheckClickOnTicTacToePiece()
@@ -397,6 +399,19 @@ public class PlayerController : Singleton<PlayerController>
             return;
 
         line.Select();
+    }
+
+    private void CheckClickOnMemoryPiece()
+    {
+        var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
+
+        if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
+            return;
+
+        if (!hit.transform.TryGetComponent(out Memory_Piece piece))
+            return;
+
+        piece.Select();
     }
 
     private void OnInteract()

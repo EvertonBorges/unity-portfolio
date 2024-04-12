@@ -63,6 +63,11 @@ public static class Manager_Events
         {
             public static Event<Dots_Line> OnCheckSquare;
         }
+
+        public static class Memory
+        {
+            public static Event<Memory_Piece> OnSelect;
+        }
     }
 
     public static class Player

@@ -17,15 +17,15 @@ MonoBehaviour:
   - _preEvent:
       _event: 
       _order: 0
-    _dialog: Bem-vindo(a) ao eVerse!
+    _dialog: "Bem-vindo(a) ao meu portif\xF3lio interativo."
     _postEvent:
       _event: 
       _order: 0
   - _preEvent:
       _event: 
       _order: 0
-    _dialog: "Idealizada pelo nosso criador, o grand\xEDssimo, magn\xEDfico, e majestoso:
-      Everton."
+    _dialog: Fique a vontade para interagir com o mundo e conhecer um pouco mais
+      do meu trabalho.
     _postEvent:
       _event: 
       _order: 0

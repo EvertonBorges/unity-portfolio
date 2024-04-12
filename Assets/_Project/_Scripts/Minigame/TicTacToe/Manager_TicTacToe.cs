@@ -25,8 +25,11 @@ public class Manager_TicTacToe : Minigame
 
     private readonly Dictionary<Tuple<int, int>, TicTacToe_Piece> m_piecesDictionary = new();
 
-    void Awake()
+
+    protected override void Awake()
     {
+        base.Awake();
+
         foreach (var piece in _pieces)
             m_piecesDictionary.Add(new(piece.Row, piece.Column), piece);
 

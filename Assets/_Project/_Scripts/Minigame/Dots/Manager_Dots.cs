@@ -41,8 +41,10 @@ public class Manager_Dots : Minigame
     
     private int m_playerOrder = 0;
 
-    void Awake()
+    protected override void Awake()
     {
+        base.Awake();
+
         CreateDots();
 
         Release();
