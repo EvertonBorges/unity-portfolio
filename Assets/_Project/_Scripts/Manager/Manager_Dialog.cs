@@ -93,7 +93,7 @@ public class Manager_Dialog : Singleton<Manager_Dialog>
 
         m_stringBuilder.Clear();
 
-        foreach (var character in dialog._dialog)
+        foreach (var character in dialog.GetDialog())
         {
             m_stringBuilder.Append(character);
 

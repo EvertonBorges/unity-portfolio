@@ -17,14 +17,17 @@ MonoBehaviour:
   - _preEvent:
       _event: 
       _order: 0
-    _dialog: "Bem-vindo(a) ao meu portif\xF3lio interativo."
+    _dialog: Welcome to my interactive portfolio.
+    _ptBrDialog: "Bem-vindo(a) ao meu portf\xF3lio interativo."
     _postEvent:
       _event: 
       _order: 0
   - _preEvent:
       _event: 
       _order: 0
-    _dialog: Fique a vontade para interagir com o mundo e conhecer um pouco mais
+    _dialog: Feel free to interact with the world and learn a little more about my
+      work.
+    _ptBrDialog: Fique a vontade para interagir com o mundo e conhecer um pouco mais
       do meu trabalho.
     _postEvent:
       _event: 

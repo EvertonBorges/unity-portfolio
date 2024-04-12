@@ -5,9 +5,12 @@ public class Manager_Settings : Singleton<Manager_Settings>
 {
 
     [SerializeField] private AudioMixer _audioMixer;
+
     [SerializeField] private UI_Settings_Slider _musicSlider;
     [SerializeField] private UI_Settings_Slider _sfxSlider;
     [SerializeField] private UI_Settings_Dropdown _languageDropdown;
+
+    public int LanguageIndex { get; private set; }
 
     protected override void Init()
     {
@@ -75,7 +78,7 @@ public class Manager_Settings : Singleton<Manager_Settings>
 
     private void UpdateLanguage(int value)
     {
-        Debug.Log($"Manager_Settings OnChangeLanguage: {value}");
+        LanguageIndex = value;
     }
 
     protected override void OnDestroy()
