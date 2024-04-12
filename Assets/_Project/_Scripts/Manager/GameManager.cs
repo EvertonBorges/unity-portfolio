@@ -15,6 +15,9 @@ public class GameManager : Singleton<GameManager>
 
     private int m_coins = 0;
 
+    private bool m_pause = false;
+    public bool Pause => m_pause;
+
     protected override void Init()
     {
         base.Init();
@@ -60,26 +63,45 @@ public class GameManager : Singleton<GameManager>
         Manager_Events.UI.UpdateCoins.Notify(m_coins);
     }
 
+    private void OnPause()
+    {
+        m_pause = true;
+
+        ShowHideSettingsUi();
+    }
+
+    private void OnUnpause()
+    {
+        m_pause = false;
+
+        ShowHideSettingsUi();
+    }
+
+    private void ShowHideSettingsUi()
+    {
+        Manager_Events.UI.OnPause.Notify(m_pause);
+    }
+
     void OnEnable()
     {
         Manager_Events.GameManager.AddCoin += AddCoin;
-        
         Manager_Events.GameManager.AddCoins += AddCoins;
-        
         Manager_Events.GameManager.RemoveCoin += RemoveCoin;
-
         Manager_Events.GameManager.RemoveCoins += RemoveCoins;
+
+        Manager_Events.GameManager.Pause += OnPause;
+        Manager_Events.GameManager.Unpause += OnUnpause;
     }
 
     void OnDisable()
     {
         Manager_Events.GameManager.AddCoin -= AddCoin;
-
         Manager_Events.GameManager.AddCoins -= AddCoins;
-
-        Manager_Events.GameManager.RemoveCoin -= RemoveCoin;
-        
+        Manager_Events.GameManager.RemoveCoin -= RemoveCoin;        
         Manager_Events.GameManager.RemoveCoins -= RemoveCoins;
+
+        Manager_Events.GameManager.Pause -= OnPause;
+        Manager_Events.GameManager.Unpause -= OnUnpause;
     }
 
 }

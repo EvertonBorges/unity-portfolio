@@ -22,6 +22,7 @@ public static class Manager_Input
         gameplayActions.Look.performed += ctx => Manager_Events.Player.OnLook.Notify(ctx.ReadValue<Vector2>());
         gameplayActions.CursorPosition.performed += ctx => Manager_Events.Player.OnCursorPosition.Notify(ctx.ReadValue<Vector2>());
         gameplayActions.Click.performed += ctx => Manager_Events.Player.OnClick.Notify();
+        gameplayActions.Pause.performed += ctx => Manager_Events.Player.OnPause.Notify();
 
         inputActions.Enable();
     }

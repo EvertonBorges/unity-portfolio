@@ -76,6 +76,8 @@ public class PlayerController : Singleton<PlayerController>
     }
 
     private bool IsFpsCam => CameraController.Instance.IsFpsCam;
+    private bool Pause => GameManager.Instance.Pause;
+    private bool CanMove => !m_interacting && !Manager_Dialog.Instance.Show;
 
     private readonly Dictionary<string, Transform> m_renderers = new();
     private Transform FindRenderer(string name)
@@ -110,7 +112,7 @@ public class PlayerController : Singleton<PlayerController>
 
     void Update()
     {
-        if (m_interacting)
+        if (!CanMove)
             return;
 
         ApplyGravity();
@@ -414,6 +416,17 @@ public class PlayerController : Singleton<PlayerController>
         piece.Select();
     }
 
+    private void OnPause()
+    {
+        if (!CanMove)
+            return;
+
+        if (Pause)
+            Manager_Events.GameManager.Unpause.Notify();
+        else
+            Manager_Events.GameManager.Pause.Notify();
+    }
+
     private void OnInteract()
     {
         if (Manager_Dialog.Instance.Show)
@@ -521,43 +534,29 @@ public class PlayerController : Singleton<PlayerController>
     void OnEnable()
     {
         Manager_Events.Player.OnMove += OnMove;
-
         Manager_Events.Player.OnLook += OnLook;
-
         Manager_Events.Player.OnRun += OnRun;
-
         Manager_Events.Player.OnInteract += OnInteract;
-
         Manager_Events.Player.OnCanRotateFpsCamera += OnCanRotateFpsCamera;
-
         Manager_Events.Player.OnStartWalk += OnStartWalk;
-
         Manager_Events.Player.OnLookAt += OnLookAt;
-
         Manager_Events.Player.OnCursorPosition += OnCursorPosition;
-
         Manager_Events.Player.OnClick += OnClick;
+        Manager_Events.Player.OnPause += OnPause;
     }
 
     void OnDisable()
     {
         Manager_Events.Player.OnMove -= OnMove;
-
         Manager_Events.Player.OnLook -= OnLook;
-
         Manager_Events.Player.OnRun -= OnRun;
-
         Manager_Events.Player.OnInteract -= OnInteract;
-
         Manager_Events.Player.OnCanRotateFpsCamera -= OnCanRotateFpsCamera;
-
         Manager_Events.Player.OnStartWalk -= OnStartWalk;
-
         Manager_Events.Player.OnLookAt -= OnLookAt;
-
         Manager_Events.Player.OnCursorPosition -= OnCursorPosition;
-
         Manager_Events.Player.OnClick -= OnClick;
+        Manager_Events.Player.OnPause -= OnPause;
     }
 
     private static float ClampAngle(float lfAngle, float lfMin, float lfMax)

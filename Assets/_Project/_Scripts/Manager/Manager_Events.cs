@@ -77,11 +77,19 @@ public static class Manager_Events
         public static Event<bool> OnRun;
         public static Event OnInteract;
         public static Event OnClick;
+        public static Event OnPause;
         public static Event<Vector2> OnCursorPosition;
         public static Event<Transform> OnLookAt;
         public static Event<GameObject, Transform> OnStartWalk;
         public static Event<GameObject> OnFinishWalk;
         public static Event<bool> OnCanRotateFpsCamera;
+    }
+
+    public static class Settings
+    {
+        public static Event<float> OnChangeMusicVolume;
+        public static Event<float> OnChangeSfxVolume;
+        public static Event OnChangeLanguage;
     }
 
     public static class Sound
@@ -94,6 +102,7 @@ public static class Manager_Events
     public static class UI
     {
         public static Event<int> UpdateCoins;
+        public static Event<bool> OnPause;
     }
 
     public static bool TryGetEvent(InspectorEvent inspectorEvent, out IEvent ev)
