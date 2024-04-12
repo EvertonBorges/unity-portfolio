@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.Pool;
 
 public class Manager_Sounds : Singleton<Manager_Sounds>
@@ -80,18 +81,14 @@ public class Manager_Sounds : Singleton<Manager_Sounds>
     void OnEnable()
     {
         Manager_Events.Sound.OnPlay += OnPlaySfx;
-
         Manager_Events.Sound.OnReleaseSfx += OnReleaseSfx;
-
         Manager_Events.Sound.OnReleaseByType += OnReleaseByType;
     }
 
     void OnDisable()
     {
         Manager_Events.Sound.OnPlay -= OnPlaySfx;
-
         Manager_Events.Sound.OnReleaseSfx -= OnReleaseSfx;
-
         Manager_Events.Sound.OnReleaseByType -= OnReleaseByType;
     }
 

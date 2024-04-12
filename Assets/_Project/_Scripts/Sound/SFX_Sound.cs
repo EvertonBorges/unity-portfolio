@@ -18,6 +18,8 @@ public class SFX_Sound : MonoBehaviour
 
         transform.name = $"[{sound.type}_Sound] - {clip.name}";
 
+        _audioSource.outputAudioMixerGroup = sound.group;
+
         _audioSource.loop = sound.loop;
 
         _audioSource.spatialBlend = sound.spatialBlend ? 1f : 0f;

@@ -45,3 +45,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _prefabSfxSound: {fileID: 4672165662830977011, guid: c6c7f97b72d6d7d40a6c34310487b10d, type: 3}
+  _audioMixer: {fileID: 24100000, guid: 18a070b359d9a9544a0915f42456ffb9, type: 2}

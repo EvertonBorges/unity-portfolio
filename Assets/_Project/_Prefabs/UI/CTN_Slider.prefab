@@ -951,14 +951,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   _event:
-    _event: Settings/OnChangeMusicVolume
+    _event: 
     _order: 0
   _slider: {fileID: 524291512734625905}
   _txtValue: {fileID: 524291511225292224}
-  _defaultValue: 80
   _minValue: 0
   _maxValue: 100
-  _converter: -20
+  _converter: -80
 --- !u!1 &524291512734625907
 GameObject:
   m_ObjectHideFlags: 0
@@ -1049,19 +1048,7 @@ MonoBehaviour:
   m_Value: 0
   m_OnValueChanged:
     m_PersistentCalls:
-      m_Calls:
-      - m_Target: {fileID: 524291512559839734}
-        m_TargetAssemblyTypeName: UI_Settings_Slider, Assembly-CSharp
-        m_MethodName: SLD_ChangeValue
-        m_Mode: 4
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
+      m_Calls: []
 --- !u!1 &524291512743052998
 GameObject:
   m_ObjectHideFlags: 0

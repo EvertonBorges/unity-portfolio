@@ -8,19 +8,14 @@ public class UI_Settings_Slider : MonoBehaviour
     [SerializeField] private InspectorEvent _event;
     [SerializeField] private Slider _slider;
     [SerializeField] private TextMeshProUGUI _txtValue;
-    [SerializeField] private float _defaultValue = 0f;
     [SerializeField] private float _minValue = 0f;
     [SerializeField] private float _maxValue = 100f;
     [SerializeField] private float _converter = 0f;
+    public float Converter => _converter;
 
     private float m_value = 0f;
 
-    void Start()
-    {
-        Setup();
-    }
-
-    private void Setup()
+    public void Setup(float value)
     {
         _slider.onValueChanged.RemoveAllListeners();
         _slider.onValueChanged.AddListener(SLD_ChangeValue);
@@ -28,14 +23,15 @@ public class UI_Settings_Slider : MonoBehaviour
         _slider.minValue = _minValue;
         _slider.maxValue = _maxValue;
 
-        m_value = _defaultValue;
+        m_value = value - _converter;
 
-        SLD_ChangeValue(m_value);
+        _slider.SetValueWithoutNotify(m_value);
+        _txtValue.SetText(m_value.ToString());
 
         //TODO load settings using event info
     }
 
-    public void SLD_ChangeValue(float value)
+    private void SLD_ChangeValue(float value)
     {
         _event.Notify(value + _converter);
         _txtValue.SetText(value.ToString());

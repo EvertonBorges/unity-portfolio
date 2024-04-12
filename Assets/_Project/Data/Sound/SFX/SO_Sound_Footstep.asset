@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SO_Sound_Footstep
   m_EditorClassIdentifier: 
   type: 2
+  group: {fileID: 330619381514898110, guid: 18a070b359d9a9544a0915f42456ffb9, type: 2}
   clip:
   - {fileID: 8300000, guid: 72f526a6a9890f643a88e85a61c86c8a, type: 3}
   - {fileID: 8300000, guid: 85016e0f2b01da248b9663dd49a161b0, type: 3}

@@ -12,7 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c38dad62c8609804ea2545d19a16c3a0, type: 3}
   m_Name: SO_Sound_Ambient
   m_EditorClassIdentifier: 
-  type: 2
+  type: 0
+  group: {fileID: -7178237665040234527, guid: 18a070b359d9a9544a0915f42456ffb9, type: 2}
   clip:
   - {fileID: 8300000, guid: e0b11feb367774245a2e3f5adec27e42, type: 3}
   volume: 0.2

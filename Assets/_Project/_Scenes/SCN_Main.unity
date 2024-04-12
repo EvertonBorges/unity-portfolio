@@ -25932,25 +25932,13 @@ PrefabInstance:
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2339061546084056460, guid: 71e97260943a69048afde5596304244f, type: 3}
-      propertyPath: m_text
-      value: 'MUSIC:'
-      objectReference: {fileID: 0}
     - target: {fileID: 2339061546362343647, guid: 71e97260943a69048afde5596304244f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 2339061546812258753, guid: 71e97260943a69048afde5596304244f, type: 3}
-      propertyPath: m_text
-      value: 'LANGUAGE:'
-      objectReference: {fileID: 0}
     - target: {fileID: 2823946422853418037, guid: 71e97260943a69048afde5596304244f, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2823946423116643130, guid: 71e97260943a69048afde5596304244f, type: 3}
-      propertyPath: m_text
-      value: 'SFX:'
       objectReference: {fileID: 0}
     - target: {fileID: 2823946423378351721, guid: 71e97260943a69048afde5596304244f, type: 3}
       propertyPath: m_AnchorMax.y

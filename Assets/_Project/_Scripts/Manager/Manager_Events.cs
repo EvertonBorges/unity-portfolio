@@ -89,7 +89,7 @@ public static class Manager_Events
     {
         public static Event<float> OnChangeMusicVolume;
         public static Event<float> OnChangeSfxVolume;
-        public static Event OnChangeLanguage;
+        public static Event<int> OnChangeLanguage;
     }
 
     public static class Sound

@@ -13,6 +13,7 @@ MonoBehaviour:
   m_Name: SO_Sound_Switch_Off
   m_EditorClassIdentifier: 
   type: 2
+  group: {fileID: 330619381514898110, guid: 18a070b359d9a9544a0915f42456ffb9, type: 2}
   clip:
   - {fileID: 8300000, guid: 0ad134edb3e35be44a7721fa40921cf0, type: 3}
   volume: 0.5
