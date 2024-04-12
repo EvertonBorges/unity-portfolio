@@ -339,7 +339,7 @@ public class PlayerController : Singleton<PlayerController>
     private void PopulateRenderers(Transform parent)
     {
         var renderers = parent.GetComponentsInChildren<SkinnedMeshRenderer>();
-        
+
         m_renderers.Clear();
 
         foreach (var renderer in renderers)
@@ -379,7 +379,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
+        if (!Physics.Raycast(ray, out RaycastHit hit, 10f, _minigameLayers.value))
             return;
 
         if (!hit.transform.TryGetComponent(out TicTacToe_Piece piece))
@@ -392,7 +392,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
+        if (!Physics.Raycast(ray, out RaycastHit hit, 10f, _minigameLayers.value))
             return;
 
         if (!hit.transform.TryGetComponent(out Dots_Line line))
@@ -405,7 +405,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         var ray = CameraController.Instance.MainCamera.ScreenPointToRay(m_cursorPosition);
 
-        if (!Physics.Raycast(ray, out RaycastHit hit, 10f,  _minigameLayers.value))
+        if (!Physics.Raycast(ray, out RaycastHit hit, 100f, _minigameLayers.value))
             return;
 
         if (!hit.transform.TryGetComponent(out Memory_Piece piece))
