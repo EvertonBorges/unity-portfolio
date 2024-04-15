@@ -33,9 +33,9 @@ public class Manager_Settings : Singleton<Manager_Settings>
 
     private void LoadLastValues()
     {
-        var music = PlayerPrefsUtils.GetFloat(PlayerPrefsUtils.SettingsKeys.VOLUME_MUSIC, 80f);
-        var sfx = PlayerPrefsUtils.GetFloat(PlayerPrefsUtils.SettingsKeys.VOLUME_SFX, 80f);
-        var language = PlayerPrefsUtils.GetInt(PlayerPrefsUtils.SettingsKeys.LANGUAGE);
+        var music = PlayerPrefsUtils.GetFloat(PlayerPrefsUtils.SettingsKeys.VOLUME_MUSIC, 0f);
+        var sfx = PlayerPrefsUtils.GetFloat(PlayerPrefsUtils.SettingsKeys.VOLUME_SFX, 0f);
+        var language = PlayerPrefsUtils.GetInt(PlayerPrefsUtils.SettingsKeys.LANGUAGE, 0);
 
         _musicSlider.Setup(music);
         _sfxSlider.Setup(sfx);
@@ -81,9 +81,9 @@ public class Manager_Settings : Singleton<Manager_Settings>
 
     private void UpdateLanguage(int value)
     {
-        Manager_Events.UI.OnChangeLanguage.Notify();
-
         LanguageIndex = value;
+
+        Manager_Events.UI.OnChangeLanguage.Notify();
     }
 
     protected override void OnDestroy()

@@ -14,8 +14,8 @@ public class SO_Translation
 
         return language switch
         {
-            1 => _value,
-            _ => _ptBrValue,
+            1 => _ptBrValue,
+            _ => _value,
         };
     }
 
