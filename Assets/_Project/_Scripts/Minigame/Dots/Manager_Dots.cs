@@ -160,12 +160,15 @@ public class Manager_Dots : Minigame
 
         _txtTurn.gameObject.SetActive(false);
 
+        var winText = Manager_Translation.Instance.FindTranslation("win");
+        var drawText = Manager_Translation.Instance.FindTranslation("draw");
+
         if (playerMarked > npcMarked)
-            _txtWinner.SetText($"Player WIN");
+            _txtWinner.SetText($"Player {winText}");
         else if (playerMarked < npcMarked)
-            _txtWinner.SetText($"CPU WIN");
+            _txtWinner.SetText($"CPU {winText}");
         else
-            _txtWinner.SetText("DRAW");
+            _txtWinner.SetText($"{drawText}");
     }
 
     private void UpdateTurnUI()

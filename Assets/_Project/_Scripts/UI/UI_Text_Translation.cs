@@ -10,6 +10,11 @@ public class UI_Text_Translation : MonoBehaviour
     [SerializeField] private TextMeshProUGUI _text;
     [SerializeField] private string _postText;
 
+    void Awake()
+    {
+        Manager_Events.UI.OnChangeLanguage += OnChangeLanguage;
+    }
+
     void Start()
     {
         OnChangeLanguage();
@@ -17,17 +22,12 @@ public class UI_Text_Translation : MonoBehaviour
 
     private void OnChangeLanguage()
     {
-        var translation = Manager_Settings.Instance.Translations.translations.First(x => x._key == _key);
-        var text = _preText + translation.GetText() + _postText;
+        var translation = Manager_Translation.Instance.FindTranslation(_key);
+        var text = _preText + translation + _postText;
         _text.SetText(text);
     }
 
-    void OnEnable()
-    {
-        Manager_Events.UI.OnChangeLanguage += OnChangeLanguage;
-    }
-
-    void OnDisable()
+    void OnDestroy()
     {
         Manager_Events.UI.OnChangeLanguage -= OnChangeLanguage;
     }

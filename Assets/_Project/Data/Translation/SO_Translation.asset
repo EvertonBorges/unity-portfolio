@@ -13,15 +13,44 @@ MonoBehaviour:
   m_Name: SO_Translation
   m_EditorClassIdentifier: 
   translations:
-  - _key: settings
-    _value: SETTINGS
-    _ptBrValue: "CONFIGURA\xC7\xD5ES"
-  - _key: music
-    _value: MUSIC
-    _ptBrValue: "M\xDASICA"
-  - _key: sfx
-    _value: SFX
-    _ptBrValue: EFEITOS SONOROS
-  - _key: language
-    _value: LANGUAGE
-    _ptBrValue: IDIOMA
+    _serializedList:
+    - Key: settings
+      Value:
+        _value: SETTINGS
+        _ptBrValue: "CONFIGURA\xC7\xD5ES"
+    - Key: music
+      Value:
+        _value: MUSIC
+        _ptBrValue: "M\xDASICA"
+    - Key: sfx
+      Value:
+        _value: SFX
+        _ptBrValue: EFEITOS SONOROS
+    - Key: language
+      Value:
+        _value: LANGUAGE
+        _ptBrValue: IDIOMA
+    - Key: certification
+      Value:
+        _value: CERTIFICATION
+        _ptBrValue: "CERTIFICA\xC7\xC3O"
+    - Key: turn
+      Value:
+        _value: TURN
+        _ptBrValue: TURNO
+    - Key: score
+      Value:
+        _value: SCORE
+        _ptBrValue: PLACAR
+    - Key: win
+      Value:
+        _value: WIN
+        _ptBrValue: VENCEU
+    - Key: draw
+      Value:
+        _value: DRAW
+        _ptBrValue: EMPATE
+    - Key: lose
+      Value:
+        _value: LOSE
+        _ptBrValue: DERROTA

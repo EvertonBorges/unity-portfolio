@@ -4,7 +4,6 @@ using System;
 public class SO_Translation
 {
     
-    public string _key;
     public string _value;
     public string _ptBrValue;
 

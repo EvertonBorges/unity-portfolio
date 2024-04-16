@@ -11,6 +11,7 @@ public static class PlayerPrefsUtils
     public static void SetBool(string key, bool value)
     {
         PlayerPrefs.SetInt(key, value ? 1 : 0);
+        PlayerPrefs.Save();
     }
 
     public static void SetBool(SettingsKeys key, bool value)
@@ -34,6 +35,7 @@ public static class PlayerPrefsUtils
     public static void SetInt(string key, int value)
     {
         PlayerPrefs.SetInt(key, value);
+        PlayerPrefs.Save();
     }
 
     public static void SetInt(SettingsKeys key, int value)
@@ -57,6 +59,7 @@ public static class PlayerPrefsUtils
     public static void SetFloat(string key, float value)
     {
         PlayerPrefs.SetFloat(key, value);
+        PlayerPrefs.Save();
     }
 
     public static void SetFloat(SettingsKeys key, float value)
@@ -80,6 +83,7 @@ public static class PlayerPrefsUtils
     public static void SetString(string key, string value)
     {
         PlayerPrefs.SetString(key, value);
+        PlayerPrefs.Save();
     }
 
     public static void SetString(SettingsKeys key, string value)

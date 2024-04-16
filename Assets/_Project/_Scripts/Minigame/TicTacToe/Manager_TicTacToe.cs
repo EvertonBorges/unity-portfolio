@@ -153,9 +153,11 @@ public class Manager_TicTacToe : Minigame
 
     private void ShowVictory(bool playerVictory)
     {
+        var winText = Manager_Translation.Instance.FindTranslation("win");
+
         _ctnGameover.SetActive(true);
 
-        _txtWinner.SetText($"P{(playerVictory ? "1" : "2")} WIN");
+        _txtWinner.SetText($"P{(playerVictory ? "1" : "2")} {winText}");
 
         _txtTurn.gameObject.SetActive(false);
 
@@ -166,9 +168,11 @@ public class Manager_TicTacToe : Minigame
 
     private void ShowDraw()
     {
+        var drawText = Manager_Translation.Instance.FindTranslation("draw");
+
         _ctnGameover.SetActive(true);
 
-        _txtWinner.SetText("DRAW");
+        _txtWinner.SetText($"{drawText}");
 
         _txtTurn.gameObject.SetActive(false);
     }
