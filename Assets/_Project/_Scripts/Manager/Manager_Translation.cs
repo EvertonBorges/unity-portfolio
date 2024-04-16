@@ -1,4 +1,3 @@
-using System.Linq;
 using UnityEngine;
 
 public class Manager_Translation : Singleton<Manager_Translation>
@@ -21,6 +20,20 @@ public class Manager_Translation : Singleton<Manager_Translation>
             return "";
         
         return translation.GetText();
+    }
+
+    public string ConvertText(string text)
+    {
+        foreach (var key in _translations.translations.Keys)
+        {
+            var keyConverted = "{" + key + "}";
+            if (text.Contains(keyConverted))
+            {
+                text = text.Replace(keyConverted, FindTranslation(key));
+            }
+        }
+
+        return text;
     }
 
 }

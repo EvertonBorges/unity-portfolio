@@ -54,3 +54,62 @@ MonoBehaviour:
       Value:
         _value: LOSE
         _ptBrValue: DERROTA
+    - Key: text_logo_default
+      Value:
+        _value: Logo of the game.
+        _ptBrValue: Logo do jogo.
+    - Key: text_mainmenu_default
+      Value:
+        _value: Main menu of the game.
+        _ptBrValue: Captura de tela do menu principal do jogo.
+    - Key: text_gameplay_default
+      Value:
+        _value: Gameplay screenshot.
+        _ptBrValue: Imagem de gameplay.
+    - Key: musem_frame_unodos_gameplay1
+      Value:
+        _value: A screen of the gameplay, level 2.
+        _ptBrValue: Imagem de gameplay, fase 2.
+    - Key: musem_frame_unodos_gameplay2
+      Value:
+        _value: A screen of the gameplay, level 3.
+        _ptBrValue: Imagem de gameplay, fase 3.
+    - Key: museum_totem_unodos_description
+      Value:
+        _value: Is a casual puzzle game, use Uno and Dos at the same time to pass
+          levels and reach to the end of the game.
+        _ptBrValue: "Jogo de quebra-cabe\xE7as casual, use Uno e Dos ao memso tempo
+          para passar de fase e chegar ao final do jogo."
+    - Key: museum_totem_cloop_description
+      Value:
+        _value: Enjoy and relax while playing CLOOP, do your best to reach the best
+          score.
+        _ptBrValue: "Aproveite e relaxe enquanto joga CLOOP, fa\xE7a seu melhor para
+          conseguir melhores pontua\xE7\xF5es."
+    - Key: museum_totem_donotdisturb_description
+      Value:
+        _value: Do Not Disturb is a 2D horror game that takes place in scenarios
+          based on locations in the city of Manaus, which are famous for having reports
+          of supernatural appearances. The game focuses on its narrative, centered
+          on creatures from Urban Legends and Myths Of region.
+        _ptBrValue: "Do Not Disturb \xE9 um jogo de terror 2D baseado em cen\xE1rios
+          locais da cidade de Manaus, que s\xE3o famosos por ter relatos de apari\xE7\xF5es
+          sobrenaturais. O jogo foca na narrativa, centrado em criaturas de Lendas
+          Urbanas e Mitos da regi\xE3o."
+    - Key: museum_totem_bubbleme_description
+      Value:
+        _value: Bub is a traveling blob who traverses the universe in search of new
+          objects to add to his collection, and studying them to better understand
+          the universe.  On his journey, Bub will encounter obstacles that will slow
+          him down, but be careful! Bubbles burst easily!
+        _ptBrValue: "Bub \xE9 uma bolha viajante que atravessa o universo em busca
+          de novos objetos que acrescente a sua cole\xE7\xE3o, e estud\xE1-los para
+          compreender melhor sobre o universo.  Em sua jornada, Bub encontrar\xE1
+          obst\xE1culos que ir\xE3o atrapalh\xE1-lo, mas cuidado! Bolhas estouram
+          com facilidade!"
+    - Key: museum_totem_trashdash_description
+      Value:
+        _value: Help the cat collect as many fish as possible in this Infinite Runner
+          and reach your best score.
+        _ptBrValue: "Ajude o gato a coletar o m\xE1ximo de peixes poss\xEDvel neste
+          Infinite Runner e alcance sua melhor pontua\xE7\xE3o."

@@ -9053,7 +9053,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: An image from gameplay
+      value: '{text_gameplay_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -9159,7 +9159,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: Main menu of the game
+      value: '{text_mainmenu_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -9507,8 +9507,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: _description
-      value: Is a casual puzzle game, use Uno and Dos at the same time to pass levels
-        and reach to the end of the game.
+      value: '{museum_totem_unodos_description}'
       objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -9685,7 +9684,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: A screen of the gameplay.
+      value: '{text_gameplay_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -9955,7 +9954,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: Logo of the game
+      value: '{text_logo_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -10127,7 +10126,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: Main menu of the game
+      value: '{text_mainmenu_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -10537,7 +10536,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: Main menu of the game
+      value: '{text_mainmenu_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -10643,7 +10642,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: A screen of the gameplay, level 2.
+      value: '{musem_frame_unodos_gameplay1}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -10749,7 +10748,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: A screen of the gameplay.
+      value: '{text_gameplay_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -10855,7 +10854,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: Logo of the game
+      value: '{text_logo_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -11125,7 +11124,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: A screen of the gameplay.
+      value: '{text_gameplay_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -11395,7 +11394,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: Main menu of the game
+      value: '{text_mainmenu_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -11665,7 +11664,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: A screen of the gameplay, level 3.
+      value: '{musem_frame_unodos_gameplay2}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name
@@ -11779,8 +11778,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: _description
-      value: Help the cat collect as many fish as possible in this infinite runner
-        and reach your best score.
+      value: '{museum_totem_trashdash_description}'
       objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -11895,7 +11893,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: _description
-      value: Enjoy and relax while playing LOOP, do your best to reach the best score.
+      value: '{museum_totem_cloop_description}'
       objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -12010,10 +12008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: _description
-      value: Bub is a traveling blob who traverses the universe in search of new
-        objects to add to his collection, and studying them to better understand
-        the universe.  On his journey, Bub will encounter obstacles that will slow
-        him down, but be careful! Bubbles burst easily!
+      value: '{museum_totem_bubbleeme_description}'
       objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -12128,10 +12123,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: _description
-      value: Do Not Disturb is a 2D horror game that takes place in scenarios based
-        on locations in the city of Manaus, which are famous for having reports of
-        supernatural appearances. The game focuses on its narrative, centered on
-        creatures from Urban Legends and Myths Of region.
+      value: '{museum_totem_donotdisturb_description}'
       objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -12382,7 +12374,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2590825109745611585, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: _description
-      value: A capture from main menu of the game
+      value: '{text_mainmenu_default}'
       objectReference: {fileID: 0}
     - target: {fileID: 3860215964871151565, guid: 3cf06a93212250146b35b95b5cf9c923, type: 3}
       propertyPath: m_Name

@@ -23,7 +23,7 @@ public class TotemController : MonoBehaviour
     [SerializeField] private InspectorEvent _activeEvent;
     [SerializeField] private InspectorEvent _desactiveEvent;
 
-    void Awake()
+    void Start()
     {
         if (_videoPlayer == null) _videoPlayer = GetComponent<VideoPlayer>();
 
@@ -32,6 +32,8 @@ public class TotemController : MonoBehaviour
         
         HandleEvents();
         DesactiveEvent();
+
+        Manager_Events.UI.OnChangeLanguage += OnChangeLanguage;
     }
 
     private void LoadVideo()
@@ -43,7 +45,12 @@ public class TotemController : MonoBehaviour
     private void LoadTotemInfos()
     {
         _txtTitle.SetText(_title);
-        _txtDescription.SetText(_description);
+        _txtDescription.SetText(Manager_Translation.Instance.ConvertText(_description));
+    }
+
+    private void OnChangeLanguage()
+    {
+        _txtDescription.SetText(Manager_Translation.Instance.ConvertText(_description));
     }
 
     private void HandleEvents()
@@ -77,6 +84,8 @@ public class TotemController : MonoBehaviour
     {
         Manager_Events.Remove(_activeEvent, ActiveEvent);
         Manager_Events.Remove(_desactiveEvent, DesactiveEvent);
+
+        Manager_Events.UI.OnChangeLanguage -= OnChangeLanguage;
     }
 
 }

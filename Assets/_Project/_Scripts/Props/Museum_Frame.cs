@@ -16,9 +16,10 @@ public class Museum_Frame : MonoBehaviour
 
     private readonly StringBuilder text = new();
 
-    void Awake()
+    void Start()
     {
         UpdateFrame();
+        Manager_Events.UI.OnChangeLanguage += UpdateFrame;
     }
 
     private void UpdateFrame()
@@ -28,9 +29,14 @@ public class Museum_Frame : MonoBehaviour
         text.Clear();
         if (!_studio.IsEmpty()) text.Append($"<b>Studio:</b> <size=0.02>{_studio}</size>\n");
         if (!_title.IsEmpty()) text.Append($"<b>Game:</b> <size=0.02>{_title}</size>\n");
-        if (!_description.IsEmpty()) text.Append($"<b>Description:</b> <size=0.02>{_description}</size>");
+        if (!_description.IsEmpty()) text.Append($"<b>Description:</b> <size=0.02>{Manager_Translation.Instance.ConvertText(_description)}</size>");
 
         _text.SetText(text);
+    }
+
+    void OnDestroy()
+    {
+        Manager_Events.UI.OnChangeLanguage -= UpdateFrame;
     }
 
 }
