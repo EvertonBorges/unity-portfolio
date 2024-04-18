@@ -156,6 +156,7 @@ public class Manager_TicTacToe : Minigame
         var winText = Manager_Translation.Instance.FindTranslation("win");
 
         _ctnGameover.SetActive(true);
+        Manager_Events.GameManager.AddCoin.Notify();
 
         _txtWinner.SetText($"P{(playerVictory ? "1" : "2")} {winText}");
 

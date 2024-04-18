@@ -164,7 +164,11 @@ public class Manager_Dots : Minigame
         var drawText = Manager_Translation.Instance.FindTranslation("draw");
 
         if (playerMarked > npcMarked)
+        {
+            Manager_Events.GameManager.AddCoin.Notify();
+
             _txtWinner.SetText($"Player {winText}");
+        }
         else if (playerMarked < npcMarked)
             _txtWinner.SetText($"CPU {winText}");
         else

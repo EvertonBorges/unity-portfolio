@@ -127,7 +127,11 @@ public class Manager_Memory : Minigame
         }
 
         if (victory)
+        {
+            Manager_Events.GameManager.AddCoin.Notify();
+
             _ctnRestart.SetActive(true);
+        }
     }
 
     void OnEnable()
