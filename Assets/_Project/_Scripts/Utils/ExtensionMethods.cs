@@ -63,4 +63,16 @@ public static class ExtensionMethods
         }
     }
 
+    public static MazeNodeDirection InverseDirection(this MazeNodeDirection direction)
+    {
+        return direction switch
+        {
+            MazeNodeDirection.Up => MazeNodeDirection.Down,
+            MazeNodeDirection.Right => MazeNodeDirection.Left,
+            MazeNodeDirection.Down => MazeNodeDirection.Up,
+            MazeNodeDirection.Left => MazeNodeDirection.Right,
+            _ => MazeNodeDirection.Down,
+        };
+    }
+
 }
