@@ -4139,7 +4139,7 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4278190080
+    rgba: 4290811692
   m_fontColor: {r: 0.17254902, g: 0.5921569, b: 0.7529412, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
@@ -12008,7 +12008,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1754944508279292063, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: _description
-      value: '{museum_totem_bubbleeme_description}'
+      value: '{museum_totem_bubbleme_description}'
       objectReference: {fileID: 0}
     - target: {fileID: 1807967002861629027, guid: dc4df637727c811429e16258f6bf355b, type: 3}
       propertyPath: m_StaticEditorFlags
