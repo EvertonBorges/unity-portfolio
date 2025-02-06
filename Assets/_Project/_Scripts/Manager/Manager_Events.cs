@@ -1,7 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.Reflection;
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 using static Observer;
 using Event = Observer.Event;
@@ -18,13 +18,13 @@ public static class Manager_Events
 
             item.Value.SetValue(null, obj);
 
-            ((IEvent) obj).SetEventName(item.Key);
+            ((IEvent)obj).SetEventName(item.Key);
         }
     }
 
     public static class Camera
     {
-        public static Event<CinemachineVirtualCamera, AnimationCurve, float> OnTransitionCamera;
+        public static Event<CinemachineCamera, AnimationCurve, float> OnTransitionCamera;
         public static Event OnTransiteToPreviousCamera;
 
         public static class Events
@@ -113,7 +113,7 @@ public static class Manager_Events
         if (!Extensions.TryGetField(inspectorEvent, out FieldInfo field))
             return false;
 
-        ev = (IEvent) field.GetValue(null);
+        ev = (IEvent)field.GetValue(null);
 
         return ev != null;
     }
@@ -125,7 +125,7 @@ public static class Manager_Events
         if (!Extensions.TryGetField(inspectorEvent, out FieldInfo field))
             return;
 
-        ev = (IEvent) field.GetValue(inspectorEvent);
+        ev = (IEvent)field.GetValue(inspectorEvent);
 
         ev.Add(callback, inspectorEvent.Order);
     }
@@ -136,8 +136,8 @@ public static class Manager_Events
 
         if (!Extensions.TryGetField(inspectorEvent, out FieldInfo field))
             return;
-        
-        ev = (IEvent) field.GetValue(inspectorEvent);
+
+        ev = (IEvent)field.GetValue(inspectorEvent);
 
         ev.Remove(callback, inspectorEvent.Order);
     }
@@ -145,7 +145,7 @@ public static class Manager_Events
     public static class Extensions
     {
         private static readonly Type MainType = typeof(Manager_Events);
-        
+
         private static readonly Dictionary<string, FieldInfo> m_fields = new();
 
         public static Dictionary<string, FieldInfo> Fields
@@ -179,7 +179,7 @@ public static class Manager_Events
             if (typeof(IEvent).IsAssignableFrom(type)) return false;
 
             if (type == typeof(Extensions)) return false;
-            
+
             return true;
         }
 

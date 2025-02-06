@@ -1,12 +1,12 @@
 using UnityEngine;
-using Cinemachine;
+using Unity.Cinemachine;
 
 public class CameraController : Singleton<CameraController>
 {
 
     private class CameraConfig
     {
-        public CinemachineVirtualCamera camera = null;
+        public CinemachineCamera camera = null;
         public AnimationCurve curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
         public float duration = 0.5f;
     }
@@ -37,7 +37,7 @@ public class CameraController : Singleton<CameraController>
         m_brain = MainCamera.GetComponent<CinemachineBrain>();
     }
 
-    private void OnTransitionCamera(CinemachineVirtualCamera camera, AnimationCurve curve, float duration)
+    private void OnTransitionCamera(CinemachineCamera camera, AnimationCurve curve, float duration)
     {
         if (m_currentCamera != null && camera == m_currentCamera.camera)
             return;
@@ -51,8 +51,8 @@ public class CameraController : Singleton<CameraController>
 
             if (curve != null)
             {
-                m_brain.m_DefaultBlend.m_CustomCurve = curve;
-                m_brain.m_DefaultBlend.m_Time = duration;
+                m_brain.DefaultBlend.CustomCurve = curve;
+                m_brain.DefaultBlend.Time = duration;
             }
 
             m_currentCamera = new()

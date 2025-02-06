@@ -1,10 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using ReadyPlayerMe.AvatarLoader;
 using ReadyPlayerMe.Core;
 using UnityEngine;
 
-[RequireComponent(typeof(Animator))]
 public class PlayerController : Singleton<PlayerController>
 {
 
@@ -15,9 +13,10 @@ public class PlayerController : Singleton<PlayerController>
     [SerializeField] private Transform _cinemachineFpsTarget;
     [SerializeField] private bool _useModel = false;
     [SerializeField] private GameObject _model;
+    [SerializeField] private RuntimeAnimatorController _runtineAnimatorController;
+    [SerializeField] private Avatar _avatarAnimator;
 
     [Header("Movement Parameters")]
-    [SerializeField] private Animator _animator;
     [SerializeField] private float _speed = 2f;
     [Range(1f, 10f)][SerializeField] private float _speedRunFactor = 3f;
     [Range(1f, 100f)][SerializeField] private float _speedChangeRate = 1f;
@@ -25,7 +24,7 @@ public class PlayerController : Singleton<PlayerController>
     [Range(0f, 0.3f)][SerializeField] private float _rotationSmoothTime = 0.12f;
     [Range(0f, 5f)][SerializeField] private float _rotationSpeed = 1f;
     [Range(0f, 180f)][SerializeField] private float _topClamp = 90f;
-    [Range(180f, 0f)][SerializeField] private float _bottomClamp = -90f;
+    [Range(180f, -90f)][SerializeField] private float _bottomClamp = -90f;
     [SerializeField] private SO_Sound _SO_SoundFootstep;
     [SerializeField] private SO_Sound _SO_SoundLand;
 
@@ -50,11 +49,9 @@ public class PlayerController : Singleton<PlayerController>
     [Header("ReadyPlayerMe Parameters")]
     [SerializeField] private string _glbUrl = "https://models.readyplayer.me/63b62a0d6b5c5b3acae7d89e.glb";
 
+    private PlayerAnimatorController m_playerAnimatorController;
     private AvatarObjectLoader m_avatarLoader;
-
     private GameObject m_avatar;
-
-    private int _animIDSpeed = 0, _animIDGrounded = 0, _animIDJump = 0, _animIDFreeFall = 0, _animIDMotionSpeed = 0;
 
     private float m_targetRotation = 0f, m_rotationVelocity, m_cinemachineTargetPitch;
     private Vector2 m_move = default, m_look = default;
@@ -75,9 +72,11 @@ public class PlayerController : Singleton<PlayerController>
         }
     }
 
+    private bool m_avatarLoaded = false;
+
     private bool IsFpsCam => CameraController.Instance.IsFpsCam;
     private bool Pause => GameManager.Instance.Pause;
-    private bool CanMove => !m_interacting && !Manager_Dialog.Instance.Show;
+    private bool CanMove => m_avatarLoaded && !m_interacting && !Manager_Dialog.Instance.Show;
 
     private readonly Dictionary<string, Transform> m_renderers = new();
     private Transform FindRenderer(string name)
@@ -94,8 +93,6 @@ public class PlayerController : Singleton<PlayerController>
     {
         base.Init();
 
-        _animator ??= GetComponent<Animator>();
-
         _characterController ??= GetComponent<CharacterController>();
 
         _interactableWarn.SetActive(false);
@@ -106,8 +103,6 @@ public class PlayerController : Singleton<PlayerController>
         base.StartInit();
 
         StartAvatar();
-
-        AssignAnimationIDs();
     }
 
     void Update()
@@ -133,17 +128,10 @@ public class PlayerController : Singleton<PlayerController>
         CameraRotation();
     }
 
-    private void AssignAnimationIDs()
-    {
-        _animIDSpeed = Animator.StringToHash("Speed");
-        _animIDGrounded = Animator.StringToHash("Grounded");
-        _animIDJump = Animator.StringToHash("Jump");
-        _animIDFreeFall = Animator.StringToHash("FreeFall");
-        _animIDMotionSpeed = Animator.StringToHash("MotionSpeed");
-    }
-
     private void StartAvatar()
     {
+        m_avatarLoaded = false;
+
         if (_useModel)
             StartAvatarByModel();
         else
@@ -154,7 +142,9 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_avatar = Instantiate(_model, m_transform);
 
-        AvatarLoaded();
+        var metadata = m_avatar.GetComponent<AvatarData>().AvatarMetadata;
+
+        AvatarLoaded(metadata);
     }
 
     private void StartAvatarReadyPlayerMe()
@@ -174,7 +164,7 @@ public class PlayerController : Singleton<PlayerController>
         {
             m_fallTimeoutDelta = _fallTimeout;
 
-            _animator.SetBool(_animIDFreeFall, false);
+            m_playerAnimatorController.OnFreeFall(false);
 
             if (m_verticalVelocity < 0.0f)
                 m_verticalVelocity = -2f;
@@ -184,7 +174,7 @@ public class PlayerController : Singleton<PlayerController>
             if (m_fallTimeoutDelta >= 0.0f)
                 m_fallTimeoutDelta -= Time.deltaTime;
             else
-                _animator.SetBool(_animIDFreeFall, true);
+                m_playerAnimatorController.OnFreeFall(true);
         }
 
         m_verticalVelocity += _gravity * Time.deltaTime;
@@ -215,7 +205,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_ground = Physics.CheckSphere(Origin, SphereRadius, _groundLayers, QueryTriggerInteraction.Ignore);
 
-        _animator.SetBool(_animIDGrounded, m_ground);
+        m_playerAnimatorController.OnGround(m_ground);
     }
 
     private void InteractableCheck()
@@ -254,9 +244,8 @@ public class PlayerController : Singleton<PlayerController>
 
         Vector3 direction = new(m_move.x, 0.0f, m_move.y);
 
-        _animator.SetFloat(_animIDMotionSpeed, direction.magnitude);
-
-        _animator.SetFloat(_animIDSpeed, m_speed);
+        m_playerAnimatorController.SetMotionSpeed(direction.magnitude);
+        m_playerAnimatorController.SetSpeed(m_speed);
     }
 
     private Vector3 GetMoveFpsDirection()
@@ -326,22 +315,30 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_avatar = args.Avatar;
 
-        AvatarLoaded();
+        AvatarLoaded(args.Metadata);
 
         m_avatarLoader.OnCompleted -= AvatarLoaderOnCompleted;
     }
 
-    private void AvatarLoaded()
+    private void AvatarLoaded(AvatarMetadata metadata)
     {
         m_avatar.SetLayerRecursively("Player");
         m_avatar.transform.SetParent(MyTransform);
         m_avatar.transform.SetLocalPositionAndRotation(Vector3.zero, Quaternion.identity);
         m_avatar.transform.name = "RPM_Model";
 
-        _animator.Rebind();
-        _animator.Update(0f);
+        var animator = m_avatar.GetComponent<Animator>();
+        animator.runtimeAnimatorController = _runtineAnimatorController;
+        animator.avatar = _avatarAnimator;
+
+        m_playerAnimatorController = m_avatar.AddComponent<PlayerAnimatorController>();
+        m_playerAnimatorController.Setup(this);
+
+        AvatarAnimationHelper.SetupAnimator(metadata, m_avatar);
 
         PopulateRenderers(m_transform);
+
+        m_avatarLoaded = true;
     }
 
     private void PopulateRenderers(Transform parent)
@@ -488,9 +485,9 @@ public class PlayerController : Singleton<PlayerController>
     {
         OnLookAt(target);
 
-        _animator.SetFloat(_animIDMotionSpeed, 1f);
+        m_playerAnimatorController.SetMotionSpeed(1f);
 
-        _animator.SetFloat(_animIDSpeed, _speed);
+        m_playerAnimatorController.SetSpeed(_speed);
 
         var lastDistance = float.PositiveInfinity;
 
@@ -510,9 +507,9 @@ public class PlayerController : Singleton<PlayerController>
             yield return null;
         }
 
-        _animator.SetFloat(_animIDMotionSpeed, 0f);
-
-        _animator.SetFloat(_animIDSpeed, 0f);
+        m_playerAnimatorController.SetMotionSpeed(0f);
+        
+        m_playerAnimatorController.SetSpeed(0f);
 
         m_canMoveByInput = true;
 
@@ -580,16 +577,14 @@ public class PlayerController : Singleton<PlayerController>
             Destroy(m_avatar);
     }
 
-    private void OnFootstep(AnimationEvent animationEvent)
+    public void OnFootstep()
     {
-        if (animationEvent.animatorClipInfo.weight > 0.5f)
-            Manager_Events.Sound.OnPlay.Notify(_SO_SoundFootstep);
+        Manager_Events.Sound.OnPlay.Notify(_SO_SoundFootstep);
     }
 
-    private void OnLand(AnimationEvent animationEvent)
+    public void OnLand()
     {
-        if (animationEvent.animatorClipInfo.weight > 0.5f)
-            Manager_Events.Sound.OnPlay.Notify(_SO_SoundLand);
+        Manager_Events.Sound.OnPlay.Notify(_SO_SoundLand);
     }
 
 }

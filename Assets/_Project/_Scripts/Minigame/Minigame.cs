@@ -1,4 +1,4 @@
-using Cinemachine;
+using Unity.Cinemachine;
 using UnityEngine;
 
 public abstract class Minigame : Interactable
@@ -6,7 +6,7 @@ public abstract class Minigame : Interactable
     
     [Header("Camera Setting")]
     [SerializeField] private LayerMask _maskInteract;
-    [SerializeField] private CinemachineVirtualCamera _camera;
+    [SerializeField] private CinemachineCamera _camera;
     [SerializeField] private AnimationCurve _curve = AnimationCurve.EaseInOut(0f, 0f, 1f, 1f);
     [SerializeField] private float _duration = 0.5f;
 
