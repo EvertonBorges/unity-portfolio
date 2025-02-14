@@ -26,6 +26,11 @@ public class Door : MonoBehaviour, IInteractable
 
         _doorAnimatorController.Open(m_opened);
 
+        if (_event == Manager_Events.Camera.Events.OnFpsCam)
+            Manager_Events.GameManager.Area.EnableMuseum.Notify();
+        else if (_event == Manager_Events.Camera.Events.OnTpsCam)
+            Manager_Events.GameManager.Area.EnableExternalArea.Notify();
+
         _event.Notify();
 
         _collider.SetActive(false);

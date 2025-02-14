@@ -35,6 +35,7 @@ public class GameManager : Singleton<GameManager>
             Manager_Events.Sound.OnPlay.Notify(so_ambient);
 
         Manager_Events.Camera.Events.OnGameStart.Notify();
+        Manager_Events.GameManager.Area.EnableExternalArea.Notify();
     }
 
     private void AddCoin() => AddCoins();

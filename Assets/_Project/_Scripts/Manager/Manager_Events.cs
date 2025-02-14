@@ -49,6 +49,12 @@ public static class Manager_Events
         public static Event<int> AddCoins;
         public static Event RemoveCoin;
         public static Event<int> RemoveCoins;
+
+        public static class Area
+        {
+            public static Event EnableExternalArea;
+            public static Event EnableMuseum;
+        }
     }
 
     public static class Minigames
