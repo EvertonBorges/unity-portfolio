@@ -113,3 +113,19 @@ MonoBehaviour:
           and reach your best score.
         _ptBrValue: "Ajude o gato a coletar o m\xE1ximo de peixes poss\xEDvel neste
           Infinite Runner e alcance sua melhor pontua\xE7\xE3o."
+    - Key: feedback
+      Value:
+        _value: FEEDBACK
+        _ptBrValue: FEEDBACK
+    - Key: your_name
+      Value:
+        _value: '*Your Name...'
+        _ptBrValue: '*Seu Nome...'
+    - Key: your_email
+      Value:
+        _value: '*Your E-mail...'
+        _ptBrValue: '*Seu E-mail...'
+    - Key: your_message
+      Value:
+        _value: '*Your Message...'
+        _ptBrValue: '*Sua Mensagem...'

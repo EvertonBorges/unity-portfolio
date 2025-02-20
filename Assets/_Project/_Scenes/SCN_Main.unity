@@ -27357,6 +27357,10 @@ PrefabInstance:
       propertyPath: m_LocalPosition.x
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2869445157159144104, guid: 71e97260943a69048afde5596304244f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 4050344372338640605, guid: 71e97260943a69048afde5596304244f, type: 3}
       propertyPath: m_Name
       value: Manager_UI
