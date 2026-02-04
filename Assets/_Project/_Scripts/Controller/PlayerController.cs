@@ -11,7 +11,6 @@ public class PlayerController : Singleton<PlayerController>
     // Lara NPC https://models.readyplayer.me/648c93f71e94941b96ce3053.glb
     [SerializeField] private CharacterController _characterController;
     [SerializeField] private Transform _cinemachineFpsTarget;
-    [SerializeField] private bool _useModel = false;
     [SerializeField] private GameObject _model;
     [SerializeField] private RuntimeAnimatorController _runtineAnimatorController;
     [SerializeField] private Avatar _avatarAnimator;
@@ -46,11 +45,7 @@ public class PlayerController : Singleton<PlayerController>
     [Tooltip("What layers the character uses as ground")]
     [SerializeField] private LayerMask _groundLayers;
 
-    [Header("ReadyPlayerMe Parameters")]
-    [SerializeField] private string _glbUrl = "https://models.readyplayer.me/63b62a0d6b5c5b3acae7d89e.glb";
-
     private PlayerAnimatorController m_playerAnimatorController;
-    private AvatarObjectLoader m_avatarLoader;
     private GameObject m_avatar;
 
     private float m_targetRotation = 0f, m_rotationVelocity, m_cinemachineTargetPitch;
@@ -132,10 +127,7 @@ public class PlayerController : Singleton<PlayerController>
     {
         m_avatarLoaded = false;
 
-        if (_useModel)
-            StartAvatarByModel();
-        else
-            StartAvatarReadyPlayerMe();
+        StartAvatarByModel();
     }
 
     private void StartAvatarByModel()
@@ -145,17 +137,6 @@ public class PlayerController : Singleton<PlayerController>
         var metadata = m_avatar.GetComponent<AvatarData>().AvatarMetadata;
 
         AvatarLoaded(metadata);
-    }
-
-    private void StartAvatarReadyPlayerMe()
-    {
-        ApplicationData.Log();
-
-        m_avatarLoader = new();
-
-        m_avatarLoader.OnCompleted += AvatarLoaderOnCompleted;
-
-        m_avatarLoader.LoadAvatar(_glbUrl);
     }
 
     private void ApplyGravity()
@@ -309,15 +290,6 @@ public class PlayerController : Singleton<PlayerController>
         _cinemachineFpsTarget.transform.localRotation = Quaternion.Euler(m_cinemachineTargetPitch, 0.0f, 0.0f);
 
         transform.Rotate(Vector3.up * m_rotationVelocity);
-    }
-
-    private void AvatarLoaderOnCompleted(object obj, CompletionEventArgs args)
-    {
-        m_avatar = args.Avatar;
-
-        AvatarLoaded(args.Metadata);
-
-        m_avatarLoader.OnCompleted -= AvatarLoaderOnCompleted;
     }
 
     private void AvatarLoaded(AvatarMetadata metadata)

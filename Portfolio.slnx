@@ -1,0 +1,17 @@
+﻿<Solution>
+  <Project Path="Assembly-CSharp.csproj" />
+  <Project Path="Boxophobic.Utils.Editor.csproj" />
+  <Project Path="AYellowpaper.SerializedCollections.csproj" />
+  <Project Path="Assembly-CSharp-Editor.csproj" />
+  <Project Path="ReadyPlayerMe.Samples.QuickStart.csproj" />
+  <Project Path="Boxophobic.SkyboxCubemapExtended.Editor.csproj" />
+  <Project Path="AYellowpaper.SerializedCollections.Editor.csproj" />
+  <Project Path="Boxophobic.Utils.Scripts.csproj" />
+  <Project Path="ReadyPlayerMe.Samples.AvatarLoading.csproj" />
+  <Project Path="StylizedWaterForURP.csproj" />
+  <Project Path="Assembly-CSharp-firstpass.csproj" />
+  <Project Path="Boxophobic.PolyverseSkies.Runtime.csproj" />
+  <Project Path="StylizedWaterForURPEditor.csproj" />
+  <Project Path="Boxophobic.PolyverseSkies.Editor.csproj" />
+  <Project Path="Boxophobic.PolyverseSkies.Scripts.csproj" />
+</Solution>
